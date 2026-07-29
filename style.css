@@ -1086,3 +1086,23 @@ footer h3 {
 
 
 }
+.card,
+.card-rsvp,
+.caixa {
+
+    opacity: 0;
+
+    transform: translateY(30px);
+
+    transition: 1s;
+
+}
+
+
+.mostrar {
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+}
