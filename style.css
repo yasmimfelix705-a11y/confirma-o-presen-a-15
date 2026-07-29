@@ -1,0 +1,1088 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+
+    font-family: 'Poppins', sans-serif;
+
+    background:
+    linear-gradient(
+        180deg,
+        #dceeff,
+        #9fc9ee,
+        #5f8fc7
+    );
+
+    color: white;
+
+    overflow-x: hidden;
+
+}
+
+
+
+/* ===================================
+   ENVELOPE DE ABERTURA
+=================================== */
+
+
+#loading {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+
+    height: 100vh;
+
+    background:
+    linear-gradient(
+        180deg,
+        #b9ddff,
+        #6f9fd5
+    );
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 9999;
+
+    transition: 1s;
+
+}
+
+
+
+.envelope {
+
+    width: 100vw;
+
+    height: 100vh;
+
+    position: relative;
+
+    cursor: pointer;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+
+
+.carta {
+
+    width: 75%;
+
+    max-width: 420px;
+
+    height: 60%;
+
+    background:
+
+    rgba(255,255,255,0.25);
+
+    backdrop-filter: blur(15px);
+
+    border-radius: 20px;
+
+    border:
+
+    1px solid rgba(255,255,255,0.5);
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    box-shadow:
+
+    0 10px 40px rgba(0,0,0,0.2);
+
+}
+
+
+
+.carta h2 {
+
+    font-family: 'Cinzel', serif;
+
+    font-size: 3rem;
+
+    color: white;
+
+}
+
+
+
+.carta p {
+
+    margin-top: 20px;
+
+    font-size: 1.1rem;
+
+}
+
+
+
+
+.tampa {
+
+    position: absolute;
+
+    width: 0;
+
+    height: 0;
+
+    border-left: 50vw solid transparent;
+
+    border-right: 50vw solid transparent;
+
+    border-top: 35vh solid rgba(255,255,255,0.35);
+
+    top: 0;
+
+    transition: 1s;
+
+}
+
+
+
+.abrir .tampa {
+
+    transform:
+
+    rotateX(180deg);
+
+    opacity: 0;
+
+}
+ 
+/* ===================================
+   SITE PRINCIPAL
+=================================== */
+
+
+#site {
+
+    display: none;
+
+    min-height: 100vh;
+
+}
+
+
+
+.hero {
+
+    min-height: 100vh;
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+    text-align: center;
+
+    padding: 30px;
+
+}
+
+
+
+.nuvens {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+
+    radial-gradient(
+        circle at 20% 30%,
+        rgba(255,255,255,0.7),
+        transparent 25%
+    ),
+
+    radial-gradient(
+        circle at 80% 20%,
+        rgba(255,255,255,0.5),
+        transparent 30%
+    );
+
+    animation:
+
+    moverNuvens 18s infinite alternate;
+
+}
+
+
+
+@keyframes moverNuvens {
+
+    from {
+
+        transform: translateX(-20px);
+
+    }
+
+
+    to {
+
+        transform: translateX(20px);
+
+    }
+
+}
+
+
+
+.brilho {
+
+    position: absolute;
+
+    width: 300px;
+
+    height: 300px;
+
+    background:
+
+    rgba(255,255,255,0.35);
+
+    filter: blur(80px);
+
+    border-radius: 50%;
+
+}
+
+
+
+.conteudo {
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+
+
+.monograma {
+
+    width: 120px;
+
+    height: 120px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+    font-family: 'Cinzel', serif;
+
+    font-size: 5rem;
+
+    color: #e8edf7;
+
+
+    border:
+
+    2px solid rgba(255,255,255,0.8);
+
+
+    background:
+
+    rgba(255,255,255,0.18);
+
+
+    backdrop-filter: blur(12px);
+
+
+    box-shadow:
+
+    0 0 30px rgba(255,255,255,0.5);
+
+}
+
+
+
+h1 {
+
+    margin-top: 25px;
+
+    font-family: 'Cinzel', serif;
+
+    font-size: 3.5rem;
+
+    font-weight: 600;
+
+}
+
+
+
+.hero h2 {
+
+    font-size: 2rem;
+
+    margin-top: 10px;
+
+}
+
+
+
+.frase {
+
+    max-width: 500px;
+
+    margin: 25px auto;
+
+    font-size: 1.2rem;
+
+    line-height: 1.7;
+
+}
+
+
+
+.botao {
+
+    display: inline-block;
+
+    padding: 15px 35px;
+
+    border-radius: 40px;
+
+    text-decoration: none;
+
+    color: white;
+
+    background:
+
+    rgba(255,255,255,0.25);
+
+    backdrop-filter: blur(10px);
+
+    border:
+
+    1px solid rgba(255,255,255,0.6);
+
+
+    transition: .3s;
+
+}
+
+
+
+.botao:hover {
+
+    transform: scale(1.05);
+
+}
+/* ===================================
+   CONTADOR
+=================================== */
+
+
+#contador {
+
+    padding: 60px 20px;
+
+    text-align: center;
+
+}
+
+
+
+#contador h2,
+#informacoes h2,
+#rsvp h2 {
+
+    font-family: 'Cinzel', serif;
+
+    font-size: 2rem;
+
+    margin-bottom: 30px;
+
+}
+
+
+
+.contador {
+
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 15px;
+
+}
+
+
+
+.caixa {
+
+    width: 90px;
+
+    height: 90px;
+
+    border-radius: 20px;
+
+
+    background:
+
+    rgba(255,255,255,0.22);
+
+
+    backdrop-filter:
+
+    blur(12px);
+
+
+    border:
+
+    1px solid rgba(255,255,255,0.5);
+
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+
+    box-shadow:
+
+    0 8px 25px rgba(0,0,0,0.15);
+
+}
+
+
+
+.caixa span {
+
+    font-size: 2rem;
+
+    font-weight: 600;
+
+}
+
+
+
+.caixa small {
+
+    font-size: .8rem;
+
+}
+
+
+
+
+
+/* ===================================
+   CARTÕES EFEITO VIDRO
+=================================== */
+
+
+.card,
+.card-rsvp {
+
+    width: 90%;
+
+    max-width: 550px;
+
+    margin: 30px auto;
+
+
+    padding: 30px;
+
+
+    background:
+
+    rgba(255,255,255,0.20);
+
+
+    backdrop-filter:
+
+    blur(15px);
+
+
+    border-radius: 25px;
+
+
+    border:
+
+    1px solid rgba(255,255,255,0.45);
+
+
+    box-shadow:
+
+    0 10px 35px rgba(0,0,0,0.15);
+
+
+}
+
+
+
+.card h3 {
+
+    font-family: 'Cinzel', serif;
+
+    margin-bottom: 15px;
+
+}
+
+
+
+.card p {
+
+    line-height: 1.7;
+
+}
+
+
+
+
+
+/* ===================================
+   RSVP
+=================================== */
+
+
+#rsvp {
+
+    padding: 60px 20px;
+
+    text-align: center;
+
+}
+
+
+
+.texto-rsvp {
+
+    margin-bottom: 25px;
+
+    line-height: 1.6;
+
+}
+
+
+
+#formRsvp {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+
+}
+
+
+
+#convidado {
+
+    width: 100%;
+
+    padding: 16px 20px;
+
+
+    border-radius: 30px;
+
+
+    border:
+
+    1px solid rgba(255,255,255,0.6);
+
+
+    outline: none;
+
+
+    background:
+
+    rgba(255,255,255,0.25);
+
+
+    backdrop-filter:
+
+    blur(10px);
+
+
+    color: white;
+
+
+    font-size: 1rem;
+
+}
+
+
+
+#convidado::placeholder {
+
+    color:
+
+    rgba(255,255,255,0.8);
+
+}
+
+
+
+button {
+
+    padding: 15px 30px;
+
+
+    border-radius: 30px;
+
+
+    border: none;
+
+
+    cursor: pointer;
+
+
+    background:
+
+    rgba(255,255,255,0.35);
+
+
+    color: white;
+
+
+    font-size: 1rem;
+
+
+    border:
+
+    1px solid rgba(255,255,255,0.6);
+
+
+    transition: .3s;
+
+}
+
+
+
+button:hover {
+
+    transform: scale(1.05);
+
+}
+
+
+
+
+
+#mensagem {
+
+    margin-top: 30px;
+
+    text-align: center;
+
+}
+
+
+
+.pessoa {
+
+    display: block;
+
+    margin: 12px auto;
+
+    padding: 12px;
+
+
+    border-radius: 15px;
+
+
+    background:
+
+    rgba(255,255,255,0.18);
+
+
+    cursor: pointer;
+
+}
+/* ===================================
+   RODAPÉ
+=================================== */
+
+
+footer {
+
+    padding: 50px 20px;
+
+    text-align: center;
+
+
+    background:
+
+    rgba(255,255,255,0.15);
+
+
+    backdrop-filter:
+
+    blur(12px);
+
+
+    border-top:
+
+    1px solid rgba(255,255,255,0.35);
+
+}
+
+
+
+footer h3 {
+
+    margin: 15px 0;
+
+    font-family: 'Cinzel', serif;
+
+    font-size: 2rem;
+
+}
+
+
+
+
+
+/* ===================================
+   ANIMAÇÕES DE ENTRADA
+=================================== */
+
+
+.conteudo {
+
+    animation:
+
+    aparecer 1.5s ease;
+
+}
+
+
+
+.card,
+.card-rsvp,
+.caixa {
+
+    animation:
+
+    subir 1s ease;
+
+}
+
+
+
+@keyframes aparecer {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+
+        translateY(40px);
+
+    }
+
+
+    to {
+
+        opacity: 1;
+
+        transform:
+
+        translateY(0);
+
+    }
+
+}
+
+
+
+@keyframes subir {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+
+        translateY(30px);
+
+    }
+
+
+    to {
+
+        opacity: 1;
+
+        transform:
+
+        translateY(0);
+
+    }
+
+}
+
+
+
+
+
+/* ===================================
+   ABERTURA DO CONVITE
+=================================== */
+
+
+#loading.fechar {
+
+    opacity: 0;
+
+    pointer-events: none;
+
+}
+
+
+
+#site.ativo {
+
+    display: block;
+
+    animation:
+
+    aparecer 1.5s ease;
+
+}
+
+
+
+
+
+/* ===================================
+   AJUSTES FINAIS DO ENVELOPE
+=================================== */
+
+
+.envelope:hover .carta {
+
+    transform:
+
+    scale(1.03);
+
+}
+
+
+
+.carta {
+
+    transition:
+
+    .8s;
+
+}
+
+
+
+.estrelas {
+
+    position: absolute;
+
+    inset: 0;
+
+    background-image:
+
+    radial-gradient(
+        white 1px,
+        transparent 1px
+    );
+
+    background-size:
+
+    40px 40px;
+
+    opacity:
+
+    .35;
+
+}
+
+
+
+
+
+/* ===================================
+   RESPONSIVIDADE CELULAR
+=================================== */
+
+
+@media (max-width: 600px) {
+
+
+
+    .carta {
+
+        width: 85%;
+
+        height: 55%;
+
+    }
+
+
+
+    .carta h2 {
+
+        font-size:
+
+        2.3rem;
+
+    }
+
+
+
+    .monograma {
+
+        width:
+
+        90px;
+
+        height:
+
+        90px;
+
+        font-size:
+
+        3.5rem;
+
+    }
+
+
+
+    h1 {
+
+        font-size:
+
+        2.5rem;
+
+    }
+
+
+
+    .hero h2 {
+
+        font-size:
+
+        1.6rem;
+
+    }
+
+
+
+    .frase {
+
+        font-size:
+
+        1rem;
+
+        padding:
+
+        0 15px;
+
+    }
+
+
+
+    .contador {
+
+        gap:
+
+        10px;
+
+    }
+
+
+
+    .caixa {
+
+        width:
+
+        75px;
+
+        height:
+
+        75px;
+
+    }
+
+
+
+    .caixa span {
+
+        font-size:
+
+        1.5rem;
+
+    }
+
+
+
+    .card,
+    .card-rsvp {
+
+        width:
+
+        95%;
+
+        padding:
+
+        22px;
+
+    }
+
+
+
+    button,
+    .botao {
+
+        width:
+
+        100%;
+
+    }
+
+
+
+}
