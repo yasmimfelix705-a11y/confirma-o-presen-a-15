@@ -3,269 +3,292 @@
 // RSVP 15 ANOS YASMIM
 // ===================================
 
+// ===================================
+// FIREBASE
+// ===================================
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAYBh_xHUGuEGMjpHEOxBU-Nppc5ymum6g",
+    authDomain: "yasmim-dc181.firebaseapp.com",
+    projectId: "yasmim-dc181",
+    storageBucket: "yasmim-dc181.firebasestorage.app",
+    messagingSenderId: "773790336369",
+    appId: "1:773790336369:web:9292e70565a551b4bf22d0",
+    measurementId: "G-MRCSX5RNGN"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+
+// ===================================
+// LISTA DE FAMÍLIAS
+// ===================================
+
 const familias = {
 
-"Núbia": [
-"Carlos",
-"Núbia",
-"Ana Vitória",
-"Sara"
-],
+    "Núbia": [
+        "Carlos",
+        "Núbia",
+        "Ana Vitória",
+        "Sara"
+    ],
 
-"Rosilene": [
-"Rosilene",
-"Rodrigo",
-"Theo"
-],
+    "Rosilene": [
+        "Rosilene",
+        "Rodrigo",
+        "Theo"
+    ],
 
-"Mara": [
-"Mara",
-"Gilberto"
-],
+    "Mara": [
+        "Mara",
+        "Gilberto"
+    ],
 
-"Vanusa": [
-"Vanusa",
-"Marcelo",
-"Estevão",
-"Valentina"
-],
+    "Vanusa": [
+        "Vanusa",
+        "Marcelo",
+        "Estevão",
+        "Valentina"
+    ],
 
-"Marilene": [
-"Marilene",
-"Warley",
-"Miguel"
-],
+    "Marilene": [
+        "Marilene",
+        "Warley",
+        "Miguel"
+    ],
 
-"Lorrane": [
-"Lorrane",
-"Filipe"
-],
+    "Lorrane": [
+        "Lorrane",
+        "Filipe"
+    ],
 
-"Rita": [
-"Rita",
-"Otamilson",
-"Bruno"
-],
+    "Rita": [
+        "Rita",
+        "Otamilson",
+        "Bruno"
+    ],
 
-"Marlene": [
-"Marlene",
-"Otailson",
-"Maria Eduarda"
-],
+    "Marlene": [
+        "Marlene",
+        "Otailson",
+        "Maria Eduarda"
+    ],
 
-"Nicole": [
-"Nicole",
-"David",
-"Maria Alice",
-"Luís Otávio"
-],
+    "Nicole": [
+        "Nicole",
+        "David",
+        "Maria Alice",
+        "Luís Otávio"
+    ],
 
-"Samara": [
-"Samara",
-"Renan",
-"Isabelly",
-"Emanuelly",
-"Eloah"
-],
+    "Samara": [
+        "Samara",
+        "Renan",
+        "Isabelly",
+        "Emanuelly",
+        "Eloah"
+    ],
 
-"Soraia": [
-"Soraia",
-"Lara",
-"Luna",
-"Laerte"
-],
+    "Soraia": [
+        "Soraia",
+        "Lara",
+        "Luna",
+        "Laerte"
+    ],
 
-"Helen": [
-"Helen",
-"Edson",
-"Isaac"
-],
+    "Helen": [
+        "Helen",
+        "Edson",
+        "Isaac"
+    ],
 
-"Adiciane": [
-"Adiciane",
-"Júlia"
-],
+    "Adiciane": [
+        "Adiciane",
+        "Júlia"
+    ],
 
-"Tânia": [
-"Tânia",
-"Laíse",
-"Luiz Gustavo",
-"Lázaro"
-],
+    "Tânia": [
+        "Tânia",
+        "Laíse",
+        "Luiz Gustavo",
+        "Lázaro"
+    ],
 
-"Sandra": [
-"Sandra",
-"Wagner",
-"Anna Júlia",
-"Anna Elize"
-],
+    "Sandra": [
+        "Sandra",
+        "Wagner",
+        "Anna Júlia",
+        "Anna Elize"
+    ],
 
-"Rafaela": [
-"Rafaela",
-"Lucas",
-"Ana Laura"
-],
+    "Rafaela": [
+        "Rafaela",
+        "Lucas",
+        "Ana Laura"
+    ],
 
-"Joana": [
-"Joana",
-"Luciano",
-"Luiza"
-],
+    "Joana": [
+        "Joana",
+        "Luciano",
+        "Luiza"
+    ],
 
-"Orlinda": [
-"Orlinda",
-"Lúcio Hélio",
-"Ryan"
-],
+    "Orlinda": [
+        "Orlinda",
+        "Lúcio Hélio",
+        "Ryan"
+    ],
 
-"Ezilane": [
-"Ezilane",
-"Maurício",
-"Kauã",
-"Sofia",
-"Isabelly"
-],
+    "Ezilane": [
+        "Ezilane",
+        "Maurício",
+        "Kauã",
+        "Sofia",
+        "Isabelly"
+    ],
 
-"Fernanda": [
-"Fernanda",
-"Otávio",
-"Benjamin"
-],
+    "Fernanda": [
+        "Fernanda",
+        "Otávio",
+        "Benjamin"
+    ],
 
-"Claudineia": [
-"Claudineia",
-"Sérgio",
-"Gabriela"
-],
+    "Claudineia": [
+        "Claudineia",
+        "Sérgio",
+        "Gabriela"
+    ],
 
-"Vanuza": [
-"Vanuza",
-"Ilmar",
-"Isabela"
-],
+    "Vanuza": [
+        "Vanuza",
+        "Ilmar",
+        "Isabela"
+    ],
 
-"Fátima": [
-"Fátima",
-"Fausto"
-],
+    "Fátima": [
+        "Fátima",
+        "Fausto"
+    ],
 
-"Fabrine": [
-"Fabrine",
-"João Vitor"
-],
+    "Fabrine": [
+        "Fabrine",
+        "João Vitor"
+    ],
 
-"Janaína": [
-"Janaína",
-"Jó",
-"Nicolas",
-"Sofia"
-],
+    "Janaína": [
+        "Janaína",
+        "Jó",
+        "Nicolas",
+        "Sofia"
+    ],
 
-"Jéssica": [
-"Jéssica",
-"Heitor",
-"Bryan",
-"Liz"
-],
+    "Jéssica": [
+        "Jéssica",
+        "Heitor",
+        "Bryan",
+        "Liz"
+    ],
 
-"Marisa": [
-"Marisa",
-"Daniel"
-],
+    "Marisa": [
+        "Marisa",
+        "Daniel"
+    ],
 
-"Tereza": [
-"Tereza",
-"Osvaldo",
-"Rafael",
-"Washington",
-"Michele"
-],
+    "Tereza": [
+        "Tereza",
+        "Osvaldo",
+        "Rafael",
+        "Washington",
+        "Michele"
+    ],
 
-"Vivian": [
-"Vivian",
-"Hebert"
-],
+    "Vivian": [
+        "Vivian",
+        "Hebert"
+    ],
 
-"Renata": [
-"Renata",
-"Roberto",
-"Samuel",
-"Maicon",
-"Marlon",
-"João Vicente"
-],
+    "Renata": [
+        "Renata",
+        "Roberto",
+        "Samuel",
+        "Maicon",
+        "Marlon",
+        "João Vicente"
+    ],
 
-"Cida": [
-"Cida",
-"José Carlos"
-],
+    "Cida": [
+        "Cida",
+        "José Carlos"
+    ],
 
-"Araci": [
-"Araci",
-"Silvio Henrique"
-],
+    "Araci": [
+        "Araci",
+        "Silvio Henrique"
+    ],
 
-"Bruna": [
-"Bruna",
-"Agnes"
-],
+    "Bruna": [
+        "Bruna",
+        "Agnes"
+    ],
 
-"Lúcia": [
-"Lúcia",
-"Márcio"
-],
+    "Lúcia": [
+        "Lúcia",
+        "Márcio"
+    ],
 
-"Sônia": [
-"Sônia",
-"Milton"
-],
+    "Sônia": [
+        "Sônia",
+        "Milton"
+    ],
 
-"Leandra": [
-"Natan",
-"Leandra",
-"Helena"
-],
+    "Leandra": [
+        "Natan",
+        "Leandra",
+        "Helena"
+    ],
 
-"Paulo Henrique": [
-"Paulo Henrique",
-"Jéssica"
-],
+    "Paulo Henrique": [
+        "Paulo Henrique",
+        "Jéssica"
+    ],
 
-"Alice": [
-"Alice",
-"Maycon",
-"Liz"
-],
+    "Alice": [
+        "Alice",
+        "Maycon",
+        "Liz"
+    ],
 
-"Nayara": [
-"Nayara",
-"Junior",
-"Lavínia",
-"Vitória",
-"Helena"
-],
+    "Nayara": [
+        "Nayara",
+        "Junior",
+        "Lavínia",
+        "Vitória",
+        "Helena"
+    ],
 
-"Eliane": [
-"Eliane",
-"Zumiro",
-"Miguel"
-],
+    "Eliane": [
+        "Eliane",
+        "Zumiro",
+        "Miguel"
+    ],
 
-"Raíssa": [
-"Raíssa",
-"Leonardo"
-],
+    "Raíssa": [
+        "Raíssa",
+        "Leonardo"
+    ],
 
-"Iane": [
-"Iane",
-"Demilson"
-],
+    "Iane": [
+        "Iane",
+        "Demilson"
+    ],
 
-"Grete": [
-"Grete",
-"Edimilson"
-]
-
+    "Grete": [
+        "Grete",
+        "Edimilson"
+    ]
 };
 
 
@@ -274,143 +297,128 @@ const familias = {
 // ===================================
 
 const convidadosIndividuais = [
-
-"Nicole Vitória",
-"Laura",
-"Ágatha",
-"Maria Aparecida",
-"Roberto",
-"Silvio",
-"Dalva",
-"Lara Mikaely",
-"Maria dos Anjos"
-
+    "Nicole Vitória",
+    "Laura",
+    "Ágatha",
+    "Maria Aparecida",
+    "Roberto",
+    "Silvio",
+    "Dalva",
+    "Lara Mikaely",
+    "Maria dos Anjos"
 ];
 
 
 // ===================================
-// FIREBASE
-// ===================================
-
-const firebaseConfig = {
-
-    apiKey: "AIzaSyAYBh_xHUGuEGMjpHEOxBU-NPPc5ymum6g",
-
-    authDomain: "yasmim-dc181.firebaseapp.com",
-
-    projectId: "yasmim-dc181",
-
-    storageBucket: "yasmim-dc181.firebasestorage.app",
-
-    messagingSenderId: "773790336369",
-
-    appId: "1:773790336369:web:9292e70565a551b4bf22d0",
-
-    measurementId: "G-MRCSX5RNGN"
-
-};
-
-
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-
-const db = firebase.firestore();
-
-
-// ===================================
-// AUTENTICAÇÃO ANÔNIMA
-// ===================================
-
-let usuarioAutenticado = false;
-
-auth.signInAnonymously()
-    .then(() => {
-
-        usuarioAutenticado = true;
-
-    })
-    .catch((erro) => {
-
-        console.error("Erro na autenticação:", erro);
-
-    });
-
-
-// ===================================
-// ELEMENTOS
+// ELEMENTOS DO SITE
 // ===================================
 
 const formulario = document.getElementById("formRsvp");
-
 const campoNome = document.getElementById("convidado");
-
 const mensagem = document.getElementById("mensagem");
 
 
 // ===================================
-// NORMALIZAR ID
+// NORMALIZAR TEXTO
 // ===================================
 
-function criarId(texto) {
-
+function normalizar(texto) {
     return texto
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "");
-
+        .trim();
 }
 
 
 // ===================================
-// BUSCA DO CONVIDADO
+// CRIAR ID ÚNICO DO CONVITE
 // ===================================
 
-formulario.addEventListener("submit", function(e) {
+function criarConviteId(tipo, nome) {
+
+    return normalizar(tipo + "-" + nome)
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+}
+
+
+// ===================================
+// LOGIN ANÔNIMO NO FIREBASE
+// ===================================
+
+let usuarioFirebase = null;
+
+auth.onAuthStateChanged(function(usuario) {
+
+    if (usuario) {
+
+        usuarioFirebase = usuario;
+
+    } else {
+
+        auth.signInAnonymously()
+            .then(function(resultado) {
+
+                usuarioFirebase = resultado.user;
+
+            })
+            .catch(function(erro) {
+
+                console.error(
+                    "Erro ao entrar no Firebase:",
+                    erro
+                );
+
+            });
+
+    }
+
+});
+
+
+// ===================================
+// BUSCAR CONVITE
+// ===================================
+
+formulario.addEventListener("submit", async function(e) {
 
     e.preventDefault();
 
-    const busca = campoNome.value
-        .trim()
-        .toLowerCase();
+    const buscaOriginal = campoNome.value.trim();
 
-    if (!busca) {
+    if (!buscaOriginal) {
         return;
     }
 
-    let resultado = null;
+    const busca = normalizar(buscaOriginal);
 
-    let tipo = null;
+    let listaEncontrada = null;
+    let nomeFamiliaEncontrada = null;
+    let tipoConvite = null;
 
-    let identificador = null;
-
-    let nomeFamilia = null;
-
-
+    
     // ===================================
-    // BUSCAR FAMÍLIA
+    // PROCURAR FAMÍLIA
     // ===================================
 
     for (const familia in familias) {
 
         const membros = familias[familia];
 
-        if (
-            familia.toLowerCase().includes(busca) ||
+        const familiaEncontrada =
+            normalizar(familia).includes(busca);
+
+        const membroEncontrado =
             membros.some(nome =>
-                nome.toLowerCase().includes(busca)
-            )
-        ) {
+                normalizar(nome).includes(busca)
+            );
 
-            resultado = membros;
+        if (familiaEncontrada || membroEncontrado) {
 
-            tipo = "familia";
-
-            nomeFamilia = familia;
-
-            identificador = "familia-" + criarId(familia);
+            listaEncontrada = membros;
+            nomeFamiliaEncontrada = familia;
+            tipoConvite = "familia";
 
             break;
         }
@@ -418,104 +426,138 @@ formulario.addEventListener("submit", function(e) {
 
 
     // ===================================
-    // BUSCAR INDIVIDUAL
+    // PROCURAR CONVIDADO INDIVIDUAL
     // ===================================
 
-    if (!resultado) {
+    if (!listaEncontrada) {
 
-        const individual = convidadosIndividuais.find(nome =>
-            nome.toLowerCase().includes(busca)
-        );
+        const individualEncontrado =
+            convidadosIndividuais.find(nome =>
+                normalizar(nome).includes(busca)
+            );
 
-        if (individual) {
+        if (individualEncontrado) {
 
-            resultado = [individual];
+            listaEncontrada = [
+                individualEncontrado
+            ];
 
-            tipo = "individual";
+            nomeFamiliaEncontrada =
+                individualEncontrado;
 
-            identificador = "individual-" + criarId(individual);
-
+            tipoConvite = "individual";
         }
-
     }
 
 
     // ===================================
-    // NÃO ENCONTROU
+    // CONVITE NÃO ENCONTRADO
     // ===================================
 
-    if (!resultado) {
+    if (!listaEncontrada) {
 
         mensagem.innerHTML = `
-
-        <h3>
-        Convite não encontrado
-        </h3>
-
-        <p>
-        Verifique o nome digitado.
-        </p>
-
+            <h3>Convite não encontrado</h3>
+            <p>Verifique o nome digitado.</p>
         `;
 
         return;
-
     }
 
 
     // ===================================
-    // MOSTRAR CONVITE
+    // VERIFICAR SE JÁ CONFIRMOU
+    // ===================================
+
+    const conviteId = criarConviteId(
+        tipoConvite,
+        nomeFamiliaEncontrada
+    );
+
+    try {
+
+        const documento =
+            await db
+                .collection("confirmacoes")
+                .doc(conviteId)
+                .get();
+
+        if (documento.exists) {
+
+            mensagem.innerHTML = `
+                <h3>Presença já confirmada 💙</h3>
+
+                <p>
+                    Este convite já teve a presença confirmada.
+                </p>
+
+                <p>
+                    Não é possível confirmar novamente.
+                </p>
+            `;
+
+            campoNome.value = "";
+
+            return;
+        }
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao verificar confirmação:",
+            erro
+        );
+
+        mensagem.innerHTML = `
+            <h3>Não foi possível verificar</h3>
+
+            <p>
+                Tente novamente em alguns instantes.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    // ===================================
+    // MOSTRAR CONVIDADOS
     // ===================================
 
     mensagem.innerHTML = `
+        <h3>Convite encontrado ✨</h3>
 
-    <h3>
-    Convite encontrado ✨
-    </h3>
+        <p>
+            Selecione quem irá participar:
+        </p>
 
-    <p>
-    Selecione quem irá participar:
-    </p>
+        ${listaEncontrada.map(nome => `
+            <label class="pessoa">
 
-    ${resultado.map(nome => `
+                <input
+                    type="checkbox"
+                    class="presenca"
+                    value="${nome}"
+                >
 
-        <label class="pessoa">
+                ${nome}
 
-        <input
-        type="checkbox"
-        class="presenca"
+            </label>
+        `).join("")}
+
+        <br>
+
+        <button
+            type="button"
+            onclick="confirmarPresenca(
+                '${conviteId}',
+                '${tipoConvite}',
+                '${nomeFamiliaEncontrada.replace(/'/g, "\\'")}'
+            )"
         >
-
-        ${nome}
-
-        </label>
-
-    `).join("")}
-
-    <br>
-
-    <button
-    type="button"
-    onclick="confirmarPresenca()"
-    >
-
-    Confirmar presença
-
-    </button>
-
+            Confirmar presença
+        </button>
     `;
-
-
-    // Guardar os dados do convite atualmente pesquisado
-
-    mensagem.dataset.conviteId = identificador;
-
-    mensagem.dataset.tipo = tipo;
-
-    mensagem.dataset.familia = nomeFamilia || "";
-
-    mensagem.dataset.convidados = JSON.stringify(resultado);
-
 
     campoNome.value = "";
 
@@ -526,173 +568,198 @@ formulario.addEventListener("submit", function(e) {
 // CONFIRMAR PRESENÇA
 // ===================================
 
-async function confirmarPresenca() {
+async function confirmarPresenca(
+    conviteId,
+    tipoConvite,
+    nomeFamilia
+) {
 
-    const selecionados = document.querySelectorAll(
-        ".presenca:checked"
-    );
+    const selecionados =
+        document.querySelectorAll(
+            ".presenca:checked"
+        );
 
+
+    // ===================================
+    // NENHUMA PESSOA SELECIONADA
+    // ===================================
 
     if (selecionados.length === 0) {
 
         mensagem.innerHTML = `
+            <h3>Atenção</h3>
 
-        <h3>
-        Atenção
-        </h3>
-
-        <p>
-        Selecione pelo menos uma pessoa.
-        </p>
-
+            <p>
+                Selecione pelo menos uma pessoa.
+            </p>
         `;
 
         return;
-
     }
 
 
-    if (!usuarioAutenticado) {
+    // ===================================
+    // PEGAR NOMES SELECIONADOS
+    // ===================================
 
-        mensagem.innerHTML = `
+    const nomes = [];
 
-        <h3>
-        Aguarde um instante
-        </h3>
+    selecionados.forEach(function(item) {
 
-        <p>
-        Estamos preparando sua confirmação.
-        </p>
+        nomes.push(item.value);
 
-        `;
+    });
 
-        return;
 
+    // ===================================
+    // DESABILITAR BOTÃO
+    // EVITA CLIQUES DUPLOS
+    // ===================================
+
+    const botao =
+        mensagem.querySelector(
+            "button"
+        );
+
+    if (botao) {
+
+        botao.disabled = true;
+
+        botao.textContent =
+            "Confirmando...";
     }
-
-
-    const conviteId = mensagem.dataset.conviteId;
-
-    const tipo = mensagem.dataset.tipo;
-
-    const familia = mensagem.dataset.familia;
-
-    const convidados = JSON.parse(
-        mensagem.dataset.convidados
-    );
-
-
-    // ===================================
-    // VERIFICAR CONFIRMAÇÃO EXISTENTE
-    // ===================================
-
-    const referencia = db
-        .collection("confirmacoes")
-        .doc(conviteId);
 
 
     try {
 
-        const documento = await referencia.get();
+        // ===================================
+        // VERIFICAR NOVAMENTE NO FIRESTORE
+        // ===================================
 
+        const documento =
+            await db
+                .collection("confirmacoes")
+                .doc(conviteId)
+                .get();
+
+
+        // ===================================
+        // JÁ CONFIRMOU
+        // ===================================
 
         if (documento.exists) {
 
             mensagem.innerHTML = `
+                <h3>Presença já confirmada 💙</h3>
 
-            <h3>
-            Presença já confirmada 💙
-            </h3>
+                <p>
+                    Este convite já teve a presença confirmada.
+                </p>
 
-            <p>
-            Este convite já foi confirmado.
-            </p>
-
+                <p>
+                    Não é possível confirmar novamente.
+                </p>
             `;
 
             return;
-
         }
 
 
         // ===================================
-        // PEGAR NOMES SELECIONADOS
+        // SALVAR CONFIRMAÇÃO
         // ===================================
 
-        const nomes = [];
+        await db
+            .collection("confirmacoes")
+            .doc(conviteId)
+            .set({
 
-        selecionados.forEach(item => {
+                conviteId: conviteId,
 
-            nomes.push(
-                item.parentElement.textContent.trim()
-            );
+                tipo: tipoConvite,
 
-        });
+                familia: nomeFamilia,
 
+                convidados: nomes,
 
-        // ===================================
-        // SALVAR NO FIRESTORE
-        // ===================================
+                quantidade: nomes.length,
 
-        await referencia.set({
+                confirmadoEm:
+                    firebase.firestore.FieldValue.serverTimestamp()
 
-            conviteId: conviteId,
-
-            tipo: tipo,
-
-            familia: familia,
-
-            convidados: nomes,
-
-            quantidade: nomes.length,
-
-            confirmadoEm:
-                firebase.firestore.FieldValue.serverTimestamp()
-
-        });
+            });
 
 
         // ===================================
-        // MENSAGEM FINAL
+        // SUCESSO
         // ===================================
 
         mensagem.innerHTML = `
+            <h3>Presença confirmada 💙</h3>
 
-        <h3>
-        Presença confirmada 💙
-        </h3>
+            <p>
+                ${nomes.length} pessoa(s)
+                confirmada(s).
+            </p>
 
-        <p>
-        ${nomes.length} pessoa(s) confirmada(s).
-        </p>
+            <p>
+                ${nomes.join(", ")}
+            </p>
 
-        <p>
-        ${nomes.join(", ")}
-        </p>
+            <br>
 
-        <br>
-
-        <p>
-        Obrigada por fazer parte desta noite especial!
-        </p>
-
+            <p>
+                Obrigada por fazer parte
+                desta noite especial!
+            </p>
         `;
 
 
     } catch (erro) {
 
-        console.error(erro);
+        console.error(
+            "Erro ao confirmar:",
+            erro
+        );
+
+
+        // ===================================
+        // ERRO DE PERMISSÃO =
+        // PROVAVELMENTE JÁ CONFIRMADO
+        // ===================================
+
+        if (
+            erro.code ===
+            "permission-denied"
+        ) {
+
+            mensagem.innerHTML = `
+                <h3>Presença já confirmada 💙</h3>
+
+                <p>
+                    Este convite já teve a presença confirmada.
+                </p>
+
+                <p>
+                    Não é possível confirmar novamente.
+                </p>
+            `;
+
+            return;
+        }
+
+
+        // ===================================
+        // OUTRO ERRO
+        // ===================================
 
         mensagem.innerHTML = `
+            <h3>Não foi possível confirmar</h3>
 
-        <h3>
-        Não foi possível confirmar
-        </h3>
-
-        <p>
-        Tente novamente em alguns instantes.
-        </p>
-
+            <p>
+                Verifique sua conexão
+                e tente novamente.
+            </p>
         `;
 
     }
