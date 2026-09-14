@@ -3,9 +3,7 @@
 // RSVP 15 ANOS YASMIM
 // ===================================
 
-
 const familias = {
-
 
 "Núbia": [
 "Carlos",
@@ -14,19 +12,16 @@ const familias = {
 "Sara"
 ],
 
-
 "Rosilene": [
 "Rosilene",
 "Rodrigo",
 "Theo"
 ],
 
-
 "Mara": [
 "Mara",
 "Gilberto"
 ],
-
 
 "Vanusa": [
 "Vanusa",
@@ -35,19 +30,16 @@ const familias = {
 "Valentina"
 ],
 
-
 "Marilene": [
 "Marilene",
 "Warley",
 "Miguel"
 ],
 
-
 "Lorrane": [
 "Lorrane",
 "Filipe"
 ],
-
 
 "Rita": [
 "Rita",
@@ -55,13 +47,11 @@ const familias = {
 "Bruno"
 ],
 
-
 "Marlene": [
 "Marlene",
 "Otailson",
 "Maria Eduarda"
 ],
-
 
 "Nicole": [
 "Nicole",
@@ -69,7 +59,6 @@ const familias = {
 "Maria Alice",
 "Luís Otávio"
 ],
-
 
 "Samara": [
 "Samara",
@@ -79,7 +68,6 @@ const familias = {
 "Eloah"
 ],
 
-
 "Soraia": [
 "Soraia",
 "Lara",
@@ -87,19 +75,16 @@ const familias = {
 "Laerte"
 ],
 
-
 "Helen": [
 "Helen",
 "Edson",
 "Isaac"
 ],
 
-
 "Adiciane": [
 "Adiciane",
 "Júlia"
 ],
-
 
 "Tânia": [
 "Tânia",
@@ -108,7 +93,6 @@ const familias = {
 "Lázaro"
 ],
 
-
 "Sandra": [
 "Sandra",
 "Wagner",
@@ -116,13 +100,11 @@ const familias = {
 "Anna Elize"
 ],
 
-
 "Rafaela": [
 "Rafaela",
 "Lucas",
 "Ana Laura"
 ],
-
 
 "Joana": [
 "Joana",
@@ -130,13 +112,11 @@ const familias = {
 "Luiza"
 ],
 
-
 "Orlinda": [
 "Orlinda",
 "Lúcio Hélio",
 "Ryan"
 ],
-
 
 "Ezilane": [
 "Ezilane",
@@ -146,18 +126,17 @@ const familias = {
 "Isabelly"
 ],
 
-
 "Fernanda": [
 "Fernanda",
 "Otávio",
 "Benjamin"
 ],
+
 "Claudineia": [
 "Claudineia",
 "Sérgio",
 "Gabriela"
 ],
-
 
 "Vanuza": [
 "Vanuza",
@@ -165,18 +144,15 @@ const familias = {
 "Isabela"
 ],
 
-
 "Fátima": [
 "Fátima",
 "Fausto"
 ],
 
-
 "Fabrine": [
 "Fabrine",
 "João Vitor"
 ],
-
 
 "Janaína": [
 "Janaína",
@@ -185,7 +161,6 @@ const familias = {
 "Sofia"
 ],
 
-
 "Jéssica": [
 "Jéssica",
 "Heitor",
@@ -193,12 +168,10 @@ const familias = {
 "Liz"
 ],
 
-
 "Marisa": [
 "Marisa",
 "Daniel"
 ],
-
 
 "Tereza": [
 "Tereza",
@@ -208,12 +181,10 @@ const familias = {
 "Michele"
 ],
 
-
 "Vivian": [
 "Vivian",
 "Hebert"
 ],
-
 
 "Renata": [
 "Renata",
@@ -221,57 +192,50 @@ const familias = {
 "Samuel",
 "Maicon",
 "Marlon",
-"José Vicente"
+"João Vicente"
 ],
-
 
 "Cida": [
 "Cida",
 "José Carlos"
 ],
 
-
 "Araci": [
 "Araci",
 "Silvio Henrique"
 ],
-
 
 "Bruna": [
 "Bruna",
 "Agnes"
 ],
 
-
 "Lúcia": [
 "Lúcia",
 "Márcio"
 ],
 
-
 "Sônia": [
 "Sônia",
 "Milton"
 ],
-  "Leandra": [
+
+"Leandra": [
 "Natan",
 "Leandra",
 "Helena"
 ],
-
 
 "Paulo Henrique": [
 "Paulo Henrique",
 "Jéssica"
 ],
 
-
 "Alice": [
 "Alice",
 "Maycon",
 "Liz"
 ],
-
 
 "Nayara": [
 "Nayara",
@@ -281,31 +245,26 @@ const familias = {
 "Helena"
 ],
 
-
 "Eliane": [
 "Eliane",
 "Zumiro",
 "Miguel"
 ],
 
-
 "Raíssa": [
 "Raíssa",
 "Leonardo"
 ],
 
-
-"Luciene": [
-"Luciene",
-"Emerson"
-],
-
-
 "Iane": [
 "Iane",
 "Demilson"
-]
+],
 
+"Grete": [
+"Grete",
+"Edimilson"
+]
 
 };
 
@@ -314,23 +273,73 @@ const familias = {
 // CONVIDADOS INDIVIDUAIS
 // ===================================
 
-
 const convidadosIndividuais = [
 
 "Nicole Vitória",
 "Laura",
 "Ágatha",
-"Thauany",
 "Maria Aparecida",
 "Roberto",
 "Silvio",
-"Dalva"
+"Dalva",
+"Lara Mikaely",
+"Maria dos Anjos"
 
 ];
+
+
 // ===================================
-// BUSCA DO CONVIDADO
+// FIREBASE
 // ===================================
 
+const firebaseConfig = {
+
+    apiKey: "AIzaSyAYBh_xHUGuEGMjpHEOxBU-NPPc5ymum6g",
+
+    authDomain: "yasmim-dc181.firebaseapp.com",
+
+    projectId: "yasmim-dc181",
+
+    storageBucket: "yasmim-dc181.firebasestorage.app",
+
+    messagingSenderId: "773790336369",
+
+    appId: "1:773790336369:web:9292e70565a551b4bf22d0",
+
+    measurementId: "G-MRCSX5RNGN"
+
+};
+
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+const db = firebase.firestore();
+
+
+// ===================================
+// AUTENTICAÇÃO ANÔNIMA
+// ===================================
+
+let usuarioAutenticado = false;
+
+auth.signInAnonymously()
+    .then(() => {
+
+        usuarioAutenticado = true;
+
+    })
+    .catch((erro) => {
+
+        console.error("Erro na autenticação:", erro);
+
+    });
+
+
+// ===================================
+// ELEMENTOS
+// ===================================
 
 const formulario = document.getElementById("formRsvp");
 
@@ -339,163 +348,153 @@ const campoNome = document.getElementById("convidado");
 const mensagem = document.getElementById("mensagem");
 
 
+// ===================================
+// NORMALIZAR ID
+// ===================================
 
-formulario.addEventListener("submit", function(e){
+function criarId(texto) {
 
+    return texto
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+
+}
+
+
+// ===================================
+// BUSCA DO CONVIDADO
+// ===================================
+
+formulario.addEventListener("submit", function(e) {
 
     e.preventDefault();
-
-
 
     const busca = campoNome.value
         .trim()
         .toLowerCase();
 
+    if (!busca) {
+        return;
+    }
+
+    let resultado = null;
+
+    let tipo = null;
+
+    let identificador = null;
+
+    let nomeFamilia = null;
 
 
-    let listaEncontrada = null;
+    // ===================================
+    // BUSCAR FAMÍLIA
+    // ===================================
 
-
-
-    // Busca por família ou integrante
-
-    for (const familia in familias){
-
+    for (const familia in familias) {
 
         const membros = familias[familia];
 
-
-
-        if(
-
-            familia.toLowerCase().includes(busca)
-
-            ||
-
+        if (
+            familia.toLowerCase().includes(busca) ||
             membros.some(nome =>
-
                 nome.toLowerCase().includes(busca)
-
             )
+        ) {
 
-        ){
+            resultado = membros;
 
+            tipo = "familia";
 
-            listaEncontrada = membros;
+            nomeFamilia = familia;
+
+            identificador = "familia-" + criarId(familia);
 
             break;
-
-
         }
-
-
     }
 
 
+    // ===================================
+    // BUSCAR INDIVIDUAL
+    // ===================================
 
-    // Busca convidados individuais
-
-    if(!listaEncontrada){
-
+    if (!resultado) {
 
         const individual = convidadosIndividuais.find(nome =>
-
             nome.toLowerCase().includes(busca)
-
         );
 
+        if (individual) {
 
+            resultado = [individual];
 
-        if(individual){
+            tipo = "individual";
 
-
-            listaEncontrada = [individual];
-
+            identificador = "individual-" + criarId(individual);
 
         }
-
 
     }
 
 
+    // ===================================
+    // NÃO ENCONTROU
+    // ===================================
 
-
-
-    // Caso não encontre
-
-    if(!listaEncontrada){
-
+    if (!resultado) {
 
         mensagem.innerHTML = `
-
 
         <h3>
         Convite não encontrado
         </h3>
 
-
         <p>
         Verifique o nome digitado.
         </p>
 
-
         `;
 
-
         return;
-
 
     }
 
 
-
-
-
-
-    // Mostra lista encontrada
+    // ===================================
+    // MOSTRAR CONVITE
+    // ===================================
 
     mensagem.innerHTML = `
-
 
     <h3>
     Convite encontrado ✨
     </h3>
 
-
-
     <p>
     Selecione quem irá participar:
     </p>
 
-
-
-    ${listaEncontrada.map(nome => `
-
+    ${resultado.map(nome => `
 
         <label class="pessoa">
 
-
-        <input 
+        <input
         type="checkbox"
         class="presenca"
         >
 
-
         ${nome}
-
 
         </label>
 
-
     `).join("")}
-
-
 
     <br>
 
-
-
-    <button 
+    <button
     type="button"
     onclick="confirmarPresenca()"
     >
@@ -504,119 +503,198 @@ formulario.addEventListener("submit", function(e){
 
     </button>
 
-
-
     `;
 
+
+    // Guardar os dados do convite atualmente pesquisado
+
+    mensagem.dataset.conviteId = identificador;
+
+    mensagem.dataset.tipo = tipo;
+
+    mensagem.dataset.familia = nomeFamilia || "";
+
+    mensagem.dataset.convidados = JSON.stringify(resultado);
 
 
     campoNome.value = "";
 
-
-
 });
-
-
-
-
 
 
 // ===================================
 // CONFIRMAR PRESENÇA
 // ===================================
 
-
-function confirmarPresenca(){
-
+async function confirmarPresenca() {
 
     const selecionados = document.querySelectorAll(
-
         ".presenca:checked"
-
     );
 
 
-
-    if(selecionados.length === 0){
-
+    if (selecionados.length === 0) {
 
         mensagem.innerHTML = `
-
 
         <h3>
         Atenção
         </h3>
 
-
         <p>
         Selecione pelo menos uma pessoa.
         </p>
 
-
         `;
 
-
         return;
-
 
     }
 
 
+    if (!usuarioAutenticado) {
+
+        mensagem.innerHTML = `
+
+        <h3>
+        Aguarde um instante
+        </h3>
+
+        <p>
+        Estamos preparando sua confirmação.
+        </p>
+
+        `;
+
+        return;
+
+    }
 
 
+    const conviteId = mensagem.dataset.conviteId;
 
-    let nomes = [];
+    const tipo = mensagem.dataset.tipo;
 
+    const familia = mensagem.dataset.familia;
 
-
-    selecionados.forEach(item => {
-
-
-        nomes.push(
-
-            item.parentElement.textContent.trim()
-
-        );
+    const convidados = JSON.parse(
+        mensagem.dataset.convidados
+    );
 
 
-    });
+    // ===================================
+    // VERIFICAR CONFIRMAÇÃO EXISTENTE
+    // ===================================
+
+    const referencia = db
+        .collection("confirmacoes")
+        .doc(conviteId);
 
 
+    try {
+
+        const documento = await referencia.get();
 
 
+        if (documento.exists) {
 
-    mensagem.innerHTML = `
+            mensagem.innerHTML = `
 
+            <h3>
+            Presença já confirmada 💙
+            </h3>
 
-    <h3>
-    Presença confirmada 💙
-    </h3>
+            <p>
+            Este convite já foi confirmado.
+            </p>
 
+            `;
 
+            return;
 
-    <p>
-    ${nomes.length} pessoa(s) confirmada(s).
-    </p>
-
-
-
-    <p>
-    ${nomes.join(", ")}
-    </p>
+        }
 
 
+        // ===================================
+        // PEGAR NOMES SELECIONADOS
+        // ===================================
 
-    <br>
+        const nomes = [];
+
+        selecionados.forEach(item => {
+
+            nomes.push(
+                item.parentElement.textContent.trim()
+            );
+
+        });
 
 
+        // ===================================
+        // SALVAR NO FIRESTORE
+        // ===================================
 
-    <p>
-    Obrigada por fazer parte desta noite especial!
-    </p>
+        await referencia.set({
+
+            conviteId: conviteId,
+
+            tipo: tipo,
+
+            familia: familia,
+
+            convidados: nomes,
+
+            quantidade: nomes.length,
+
+            confirmadoEm:
+                firebase.firestore.FieldValue.serverTimestamp()
+
+        });
 
 
-    `;
+        // ===================================
+        // MENSAGEM FINAL
+        // ===================================
+
+        mensagem.innerHTML = `
+
+        <h3>
+        Presença confirmada 💙
+        </h3>
+
+        <p>
+        ${nomes.length} pessoa(s) confirmada(s).
+        </p>
+
+        <p>
+        ${nomes.join(", ")}
+        </p>
+
+        <br>
+
+        <p>
+        Obrigada por fazer parte desta noite especial!
+        </p>
+
+        `;
 
 
+    } catch (erro) {
+
+        console.error(erro);
+
+        mensagem.innerHTML = `
+
+        <h3>
+        Não foi possível confirmar
+        </h3>
+
+        <p>
+        Tente novamente em alguns instantes.
+        </p>
+
+        `;
+
+    }
 
 }
