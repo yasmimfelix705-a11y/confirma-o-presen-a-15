@@ -24,7 +24,7 @@ const auth = firebase.auth();
 
 
 // ===================================
-// LISTA DE FAMÍLIAS
+// FAMÍLIAS
 // ===================================
 
 const familias = {
@@ -310,7 +310,7 @@ const convidadosIndividuais = [
 
 
 // ===================================
-// ELEMENTOS DO SITE
+// ELEMENTOS
 // ===================================
 
 const formulario = document.getElementById("formRsvp");
@@ -323,6 +323,7 @@ const mensagem = document.getElementById("mensagem");
 // ===================================
 
 function normalizar(texto) {
+
     return texto
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -332,7 +333,7 @@ function normalizar(texto) {
 
 
 // ===================================
-// CRIAR ID ÚNICO DO CONVITE
+// ID ÚNICO DO CONVITE
 // ===================================
 
 function criarConviteId(tipo, nome) {
@@ -344,7 +345,7 @@ function criarConviteId(tipo, nome) {
 
 
 // ===================================
-// LOGIN ANÔNIMO NO FIREBASE
+// LOGIN ANÔNIMO
 // ===================================
 
 let usuarioFirebase = null;
@@ -371,7 +372,6 @@ auth.onAuthStateChanged(function(usuario) {
                 );
 
             });
-
     }
 
 });
@@ -394,10 +394,10 @@ formulario.addEventListener("submit", async function(e) {
     const busca = normalizar(buscaOriginal);
 
     let listaEncontrada = null;
-    let nomeFamiliaEncontrada = null;
+    let nomeConvite = null;
     let tipoConvite = null;
 
-    
+
     // ===================================
     // PROCURAR FAMÍLIA
     // ===================================
@@ -406,18 +406,15 @@ formulario.addEventListener("submit", async function(e) {
 
         const membros = familias[familia];
 
-        const familiaEncontrada =
-            normalizar(familia).includes(busca);
-
-        const membroEncontrado =
+        if (
+            normalizar(familia).includes(busca) ||
             membros.some(nome =>
                 normalizar(nome).includes(busca)
-            );
-
-        if (familiaEncontrada || membroEncontrado) {
+            )
+        ) {
 
             listaEncontrada = membros;
-            nomeFamiliaEncontrada = familia;
+            nomeConvite = familia;
             tipoConvite = "familia";
 
             break;
@@ -426,32 +423,27 @@ formulario.addEventListener("submit", async function(e) {
 
 
     // ===================================
-    // PROCURAR CONVIDADO INDIVIDUAL
+    // PROCURAR INDIVIDUAL
     // ===================================
 
     if (!listaEncontrada) {
 
-        const individualEncontrado =
+        const individual =
             convidadosIndividuais.find(nome =>
                 normalizar(nome).includes(busca)
             );
 
-        if (individualEncontrado) {
+        if (individual) {
 
-            listaEncontrada = [
-                individualEncontrado
-            ];
-
-            nomeFamiliaEncontrada =
-                individualEncontrado;
-
+            listaEncontrada = [individual];
+            nomeConvite = individual;
             tipoConvite = "individual";
         }
     }
 
 
     // ===================================
-    // CONVITE NÃO ENCONTRADO
+    // NÃO ENCONTROU
     // ===================================
 
     if (!listaEncontrada) {
@@ -466,13 +458,19 @@ formulario.addEventListener("submit", async function(e) {
 
 
     // ===================================
-    // VERIFICAR SE JÁ CONFIRMOU
+    // ID DO CONVITE
     // ===================================
 
-    const conviteId = criarConviteId(
-        tipoConvite,
-        nomeFamiliaEncontrada
-    );
+    const conviteId =
+        criarConviteId(
+            tipoConvite,
+            nomeConvite
+        );
+
+
+    // ===================================
+    // VERIFICAR SE JÁ CONFIRMOU
+    // ===================================
 
     try {
 
@@ -549,15 +547,32 @@ formulario.addEventListener("submit", async function(e) {
 
         <button
             type="button"
-            onclick="confirmarPresenca(
-                '${conviteId}',
-                '${tipoConvite}',
-                '${nomeFamiliaEncontrada.replace(/'/g, "\\'")}'
-            )"
+            id="botaoConfirmar"
         >
             Confirmar presença
         </button>
     `;
+
+
+    // ===================================
+    // BOTÃO DE CONFIRMAÇÃO
+    // ===================================
+
+    document
+        .getElementById("botaoConfirmar")
+        .addEventListener(
+            "click",
+            function() {
+
+                confirmarPresenca(
+                    conviteId,
+                    tipoConvite,
+                    nomeConvite
+                );
+
+            }
+        );
+
 
     campoNome.value = "";
 
@@ -571,7 +586,7 @@ formulario.addEventListener("submit", async function(e) {
 async function confirmarPresenca(
     conviteId,
     tipoConvite,
-    nomeFamilia
+    nomeConvite
 ) {
 
     const selecionados =
@@ -581,7 +596,7 @@ async function confirmarPresenca(
 
 
     // ===================================
-    // NENHUMA PESSOA SELECIONADA
+    // NINGUÉM SELECIONADO
     // ===================================
 
     if (selecionados.length === 0) {
@@ -599,7 +614,7 @@ async function confirmarPresenca(
 
 
     // ===================================
-    // PEGAR NOMES SELECIONADOS
+    // PEGAR NOMES
     // ===================================
 
     const nomes = [];
@@ -613,12 +628,11 @@ async function confirmarPresenca(
 
     // ===================================
     // DESABILITAR BOTÃO
-    // EVITA CLIQUES DUPLOS
     // ===================================
 
     const botao =
-        mensagem.querySelector(
-            "button"
+        document.getElementById(
+            "botaoConfirmar"
         );
 
     if (botao) {
@@ -633,7 +647,7 @@ async function confirmarPresenca(
     try {
 
         // ===================================
-        // VERIFICAR NOVAMENTE NO FIRESTORE
+        // VERIFICAR NOVAMENTE
         // ===================================
 
         const documento =
@@ -644,7 +658,7 @@ async function confirmarPresenca(
 
 
         // ===================================
-        // JÁ CONFIRMOU
+        // JÁ EXISTE
         // ===================================
 
         if (documento.exists) {
@@ -666,7 +680,7 @@ async function confirmarPresenca(
 
 
         // ===================================
-        // SALVAR CONFIRMAÇÃO
+        // SALVAR NO FIRESTORE
         // ===================================
 
         await db
@@ -678,14 +692,16 @@ async function confirmarPresenca(
 
                 tipo: tipoConvite,
 
-                familia: nomeFamilia,
+                familia: nomeConvite,
 
                 convidados: nomes,
 
                 quantidade: nomes.length,
 
                 confirmadoEm:
-                    firebase.firestore.FieldValue.serverTimestamp()
+                    firebase.firestore
+                        .FieldValue
+                        .serverTimestamp()
 
             });
 
@@ -698,8 +714,8 @@ async function confirmarPresenca(
             <h3>Presença confirmada 💙</h3>
 
             <p>
-                ${nomes.length} pessoa(s)
-                confirmada(s).
+                ${nomes.length}
+                pessoa(s) confirmada(s).
             </p>
 
             <p>
@@ -718,14 +734,13 @@ async function confirmarPresenca(
     } catch (erro) {
 
         console.error(
-            "Erro ao confirmar:",
+            "Erro ao salvar confirmação:",
             erro
         );
 
 
         // ===================================
-        // ERRO DE PERMISSÃO =
-        // PROVAVELMENTE JÁ CONFIRMADO
+        // JÁ CONFIRMADO / SEM PERMISSÃO
         // ===================================
 
         if (
@@ -750,18 +765,21 @@ async function confirmarPresenca(
 
 
         // ===================================
-        // OUTRO ERRO
+        // ERRO
         // ===================================
 
         mensagem.innerHTML = `
             <h3>Não foi possível confirmar</h3>
 
             <p>
+                Ocorreu um erro ao salvar
+                sua confirmação.
+            </p>
+
+            <p>
                 Verifique sua conexão
                 e tente novamente.
             </p>
         `;
-
     }
-
 }
