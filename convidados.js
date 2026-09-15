@@ -3,6 +3,7 @@
 // RSVP 15 ANOS YASMIM
 // ===================================
 
+
 // ===================================
 // FIREBASE
 // ===================================
@@ -310,7 +311,7 @@ const convidadosIndividuais = [
 
 
 // ===================================
-// ELEMENTOS
+// ELEMENTOS DO SITE
 // ===================================
 
 const formulario = document.getElementById("formRsvp");
@@ -333,41 +334,32 @@ function normalizar(texto) {
 
 
 // ===================================
-// ID ÚNICO DO CONVITE
+// CRIAR ID ÚNICO
 // ===================================
 
 function criarConviteId(tipo, nome) {
 
-    return normalizar(tipo + "-" + nome)
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "");
+    return normalizar(
+        tipo + "-" + nome
+    )
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 
 // ===================================
-// LOGIN ANÔNIMO
+// AUTENTICAÇÃO ANÔNIMA
 // ===================================
-
-let usuarioFirebase = null;
 
 auth.onAuthStateChanged(function(usuario) {
 
-    if (usuario) {
-
-        usuarioFirebase = usuario;
-
-    } else {
+    if (!usuario) {
 
         auth.signInAnonymously()
-            .then(function(resultado) {
-
-                usuarioFirebase = resultado.user;
-
-            })
             .catch(function(erro) {
 
                 console.error(
-                    "Erro ao entrar no Firebase:",
+                    "Erro na autenticação:",
                     erro
                 );
 
@@ -381,202 +373,178 @@ auth.onAuthStateChanged(function(usuario) {
 // BUSCAR CONVITE
 // ===================================
 
-formulario.addEventListener("submit", async function(e) {
+formulario.addEventListener(
+    "submit",
+    function(e) {
 
-    e.preventDefault();
+        e.preventDefault();
 
-    const buscaOriginal = campoNome.value.trim();
+        const buscaOriginal =
+            campoNome.value.trim();
 
-    if (!buscaOriginal) {
-        return;
-    }
-
-    const busca = normalizar(buscaOriginal);
-
-    let listaEncontrada = null;
-    let nomeConvite = null;
-    let tipoConvite = null;
-
-
-    // ===================================
-    // PROCURAR FAMÍLIA
-    // ===================================
-
-    for (const familia in familias) {
-
-        const membros = familias[familia];
-
-        if (
-            normalizar(familia).includes(busca) ||
-            membros.some(nome =>
-                normalizar(nome).includes(busca)
-            )
-        ) {
-
-            listaEncontrada = membros;
-            nomeConvite = familia;
-            tipoConvite = "familia";
-
-            break;
+        if (!buscaOriginal) {
+            return;
         }
-    }
+
+        const busca =
+            normalizar(buscaOriginal);
+
+        let listaEncontrada = null;
+        let nomeConvite = null;
+        let tipoConvite = null;
 
 
-    // ===================================
-    // PROCURAR INDIVIDUAL
-    // ===================================
+        // ===================================
+        // PROCURAR FAMÍLIA
+        // ===================================
 
-    if (!listaEncontrada) {
+        for (const familia in familias) {
 
-        const individual =
-            convidadosIndividuais.find(nome =>
-                normalizar(nome).includes(busca)
-            );
+            const membros =
+                familias[familia];
 
-        if (individual) {
+            if (
+                normalizar(familia)
+                    .includes(busca)
+                ||
+                membros.some(nome =>
+                    normalizar(nome)
+                        .includes(busca)
+                )
+            ) {
 
-            listaEncontrada = [individual];
-            nomeConvite = individual;
-            tipoConvite = "individual";
+                listaEncontrada =
+                    membros;
+
+                nomeConvite =
+                    familia;
+
+                tipoConvite =
+                    "familia";
+
+                break;
+            }
         }
-    }
 
 
-    // ===================================
-    // NÃO ENCONTROU
-    // ===================================
+        // ===================================
+        // PROCURAR INDIVIDUAL
+        // ===================================
 
-    if (!listaEncontrada) {
+        if (!listaEncontrada) {
 
-        mensagem.innerHTML = `
-            <h3>Convite não encontrado</h3>
-            <p>Verifique o nome digitado.</p>
-        `;
+            const individual =
+                convidadosIndividuais.find(
+                    nome =>
+                        normalizar(nome)
+                            .includes(busca)
+                );
 
-        return;
-    }
+            if (individual) {
+
+                listaEncontrada =
+                    [individual];
+
+                nomeConvite =
+                    individual;
+
+                tipoConvite =
+                    "individual";
+            }
+        }
 
 
-    // ===================================
-    // ID DO CONVITE
-    // ===================================
+        // ===================================
+        // NÃO ENCONTRADO
+        // ===================================
 
-    const conviteId =
-        criarConviteId(
-            tipoConvite,
-            nomeConvite
-        );
-
-
-    // ===================================
-    // VERIFICAR SE JÁ CONFIRMOU
-    // ===================================
-
-    try {
-
-        const documento =
-            await db
-                .collection("confirmacoes")
-                .doc(conviteId)
-                .get();
-
-        if (documento.exists) {
+        if (!listaEncontrada) {
 
             mensagem.innerHTML = `
-                <h3>Presença já confirmada 💙</h3>
+                <h3>Convite não encontrado</h3>
 
                 <p>
-                    Este convite já teve a presença confirmada.
-                </p>
-
-                <p>
-                    Não é possível confirmar novamente.
+                    Verifique o nome digitado.
                 </p>
             `;
-
-            campoNome.value = "";
 
             return;
         }
 
-    } catch (erro) {
 
-        console.error(
-            "Erro ao verificar confirmação:",
-            erro
-        );
+        // ===================================
+        // ID DO CONVITE
+        // ===================================
+
+        const conviteId =
+            criarConviteId(
+                tipoConvite,
+                nomeConvite
+            );
+
+
+        // ===================================
+        // MOSTRAR CONVIDADOS
+        // ===================================
 
         mensagem.innerHTML = `
-            <h3>Não foi possível verificar</h3>
+            <h3>Convite encontrado ✨</h3>
 
             <p>
-                Tente novamente em alguns instantes.
+                Selecione quem irá participar:
             </p>
+
+            ${listaEncontrada.map(nome => `
+                <label class="pessoa">
+
+                    <input
+                        type="checkbox"
+                        class="presenca"
+                        value="${nome}"
+                    >
+
+                    ${nome}
+
+                </label>
+            `).join("")}
+
+            <br>
+
+            <button
+                type="button"
+                id="botaoConfirmar"
+            >
+                Confirmar presença
+            </button>
         `;
 
-        return;
+
+        // ===================================
+        // BOTÃO
+        // ===================================
+
+        document
+            .getElementById(
+                "botaoConfirmar"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+                    confirmarPresenca(
+                        conviteId,
+                        tipoConvite,
+                        nomeConvite
+                    );
+
+                }
+            );
+
+
+        campoNome.value = "";
+
     }
-
-
-    // ===================================
-    // MOSTRAR CONVIDADOS
-    // ===================================
-
-    mensagem.innerHTML = `
-        <h3>Convite encontrado ✨</h3>
-
-        <p>
-            Selecione quem irá participar:
-        </p>
-
-        ${listaEncontrada.map(nome => `
-            <label class="pessoa">
-
-                <input
-                    type="checkbox"
-                    class="presenca"
-                    value="${nome}"
-                >
-
-                ${nome}
-
-            </label>
-        `).join("")}
-
-        <br>
-
-        <button
-            type="button"
-            id="botaoConfirmar"
-        >
-            Confirmar presença
-        </button>
-    `;
-
-
-    // ===================================
-    // BOTÃO DE CONFIRMAÇÃO
-    // ===================================
-
-    document
-        .getElementById("botaoConfirmar")
-        .addEventListener(
-            "click",
-            function() {
-
-                confirmarPresenca(
-                    conviteId,
-                    tipoConvite,
-                    nomeConvite
-                );
-
-            }
-        );
-
-
-    campoNome.value = "";
-
-});
+);
 
 
 // ===================================
@@ -619,11 +587,13 @@ async function confirmarPresenca(
 
     const nomes = [];
 
-    selecionados.forEach(function(item) {
+    selecionados.forEach(
+        function(item) {
 
-        nomes.push(item.value);
+            nomes.push(item.value);
 
-    });
+        }
+    );
 
 
     // ===================================
@@ -647,40 +617,20 @@ async function confirmarPresenca(
     try {
 
         // ===================================
-        // VERIFICAR NOVAMENTE
+        // GARANTIR QUE ESTÁ AUTENTICADO
         // ===================================
 
-        const documento =
-            await db
-                .collection("confirmacoes")
-                .doc(conviteId)
-                .get();
+        if (!auth.currentUser) {
 
-
-        // ===================================
-        // JÁ EXISTE
-        // ===================================
-
-        if (documento.exists) {
-
-            mensagem.innerHTML = `
-                <h3>Presença já confirmada 💙</h3>
-
-                <p>
-                    Este convite já teve a presença confirmada.
-                </p>
-
-                <p>
-                    Não é possível confirmar novamente.
-                </p>
-            `;
-
-            return;
+            await auth.signInAnonymously();
         }
 
 
         // ===================================
-        // SALVAR NO FIRESTORE
+        // SALVAR DIRETAMENTE
+        //
+        // NÃO FAZEMOS .get()
+        // PORQUE A LEITURA ESTÁ BLOQUEADA
         // ===================================
 
         await db
@@ -688,15 +638,20 @@ async function confirmarPresenca(
             .doc(conviteId)
             .set({
 
-                conviteId: conviteId,
+                conviteId:
+                    conviteId,
 
-                tipo: tipoConvite,
+                tipo:
+                    tipoConvite,
 
-                familia: nomeConvite,
+                familia:
+                    nomeConvite,
 
-                convidados: nomes,
+                convidados:
+                    nomes,
 
-                quantidade: nomes.length,
+                quantidade:
+                    nomes.length,
 
                 confirmadoEm:
                     firebase.firestore
@@ -734,13 +689,13 @@ async function confirmarPresenca(
     } catch (erro) {
 
         console.error(
-            "Erro ao salvar confirmação:",
+            "Erro ao confirmar presença:",
             erro
         );
 
 
         // ===================================
-        // JÁ CONFIRMADO / SEM PERMISSÃO
+        // SEGUNDA TENTATIVA
         // ===================================
 
         if (
@@ -752,11 +707,13 @@ async function confirmarPresenca(
                 <h3>Presença já confirmada 💙</h3>
 
                 <p>
-                    Este convite já teve a presença confirmada.
+                    Este convite já teve
+                    a presença confirmada.
                 </p>
 
                 <p>
-                    Não é possível confirmar novamente.
+                    Não é possível
+                    confirmar novamente.
                 </p>
             `;
 
@@ -765,7 +722,7 @@ async function confirmarPresenca(
 
 
         // ===================================
-        // ERRO
+        // OUTRO ERRO
         // ===================================
 
         mensagem.innerHTML = `
@@ -777,9 +734,10 @@ async function confirmarPresenca(
             </p>
 
             <p>
-                Verifique sua conexão
-                e tente novamente.
+                Tente novamente.
             </p>
         `;
+
     }
+
 }
