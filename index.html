@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="theme-color"
+        content="#dceeff">
+
+    <title>Confirmação de Presença — Yasmim 15 Anos</title>
+
+    <!-- FONTES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="estrelas"></div>
+
+    <main class="pagina">
+
+        <!-- CABEÇALHO -->
+
+        <header class="cabecalho">
+
+            <div class="monograma">
+                Y
+            </div>
+
+            <p class="pequeno">
+                15 ANOS
+            </p>
+
+            <h1>
+                Yasmim
+            </h1>
+
+            <p class="data">
+                05 de dezembro • 20:00
+            </p>
+
+        </header>
+
+
+        <!-- CARD -->
+
+        <section class="card">
+
+            <div class="icone">
+                ♡
+            </div>
+
+            <h2>
+                Confirme sua presença
+            </h2>
+
+            <p class="introducao">
+                Será uma alegria ter você comigo nessa noite tão especial. 💙
+            </p>
+
+            <p class="instrucao">
+                Digite seu nome ou o nome da família para encontrar seu convite.
+            </p>
+
+
+            <!-- BUSCA -->
+
+            <form id="formRsvp">
+
+                <label for="convidado">
+                    Nome do convidado
+                </label>
+
+                <input
+                    type="text"
+                    id="convidado"
+                    name="convidado"
+                    placeholder="Digite seu nome"
+                    autocomplete="off"
+                    required>
+
+                <button
+                    type="submit"
+                    id="botaoBuscar">
+
+                    Buscar convite
+
+                </button>
+
+            </form>
+
+
+            <!-- RESULTADO -->
+
+            <div
+                id="mensagem"
+                aria-live="polite">
+            </div>
+
+        </section>
+
+
+        <!-- FRASE FINAL -->
+
+        <section class="mensagem-final">
+
+            <p>
+                Uma noite iluminada por sonhos, marcada por memórias
+                e cercada por pessoas especiais.
+            </p>
+
+            <span>
+                Com carinho, Yasmim 🩵
+            </span>
+
+        </section>
+
+
+        <!-- RODAPÉ -->
+
+        <footer>
+
+            <p>
+                Yasmim • 15 anos
+            </p>
+
+            <p>
+                05 de dezembro
+            </p>
+
+        </footer>
+
+    </main>
+
+
+    <!-- FIREBASE -->
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+
+    <!-- LISTA DE CONVIDADOS -->
+
+    <script src="convidados.js"></script>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
+
+2. "script.js"
+
+:::writing{variant="document" id="27594" title="script.js — Firebase e confirmação"}
+
+/* ==========================================================
+   CONFIGURAÇÃO DO FIREBASE
+========================================================== */
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyAYBh_xHUGuEGMjpHEOxBU-Nppc5ymum6g",
+
+    authDomain: "yasmim-dc181.firebaseapp.com",
+
+    projectId: "yasmim-dc181",
+
+    storageBucket: "yasmim-dc181.firebasestorage.app",
+
+    messagingSenderId: "773790336369",
+
+    appId: "1:773790336369:web:9292e70565a551b4bf22d0",
+
+    measurementId: "G-MRCSX5RNGN"
+
+};
+
+
+/* ==========================================================
+   INICIALIZAR FIREBASE
+========================================================== */
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+const db = firebase.firestore();
+
+
+/* ==========================================================
+   AUTENTICAÇÃO ANÔNIMA
+========================================================== */
+
+let usuarioFirebase = null;
+
+auth.signInAnonymously()
+    .then((resultado) => {
+
+        usuarioFirebase = resultado.user;
+
+        console.log("Firebase conectado.");
+
+    })
+    .catch((erro) => {
+
+        console.error(
+            "Erro na autenticação:",
+            erro
+        );
+
+    });
+
+
+/* ==========================================================
+   NORMALIZAR TEXTO
+========================================================== */
+
+function normalizarTexto(texto) {
+
+    return String(texto || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+
+}
+
+
+/* ==========================================================
+   ESCAPAR HTML
+========================================================== */
+
+function escaparHTML(texto) {
+
+    return String(texto)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ==========================================================
+   CRIAR ID ÚNICO DO CONVITE
+========================================================== */
+
+function criarIdConvite(grupo) {
+
+    return normalizarTexto(grupo.familia)
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+
+}
+
+
+/* ==========================================================
+   BUSCAR CONVIDADO
+========================================================== */
+
+function buscarConvidado(nomeDigitado) {
+
+    const busca = normalizarTexto(nomeDigitado);
+
+    if (!busca) {
+        return null;
+    }
+
+
+    /* NOME EXATO */
+
+    for (const grupo of familias) {
+
+        for (const pessoa of grupo.pessoas) {
+
+            if (normalizarTexto(pessoa) === busca) {
+
+                return grupo;
+
+            }
+
+        }
+
+    }
+
+
+    /* NOME DA FAMÍLIA */
+
+    for (const grupo of familias) {
+
+        if (
+            normalizarTexto(grupo.familia) === busca
+        ) {
+
+            return grupo;
+
+        }
+
+    }
+
+
+    /* BUSCA PARCIAL */
+
+    for (const grupo of familias) {
+
+        const familia = normalizarTexto(grupo.familia);
+
+        if (familia.includes(busca)) {
+
+            return grupo;
+
+        }
+
+
+        for (const pessoa of grupo.pessoas) {
+
+            const nome = normalizarTexto(pessoa);
+
+            if (
+                nome.includes(busca) ||
+                busca.includes(nome)
+            ) {
+
+                return grupo;
+
+            }
+
+        }
+
+    }
+
+
+    /* CONVIDADOS INDIVIDUAIS */
+
+    for (const nome of convidadosIndividuais) {
+
+        const nomeNormalizado = normalizarTexto(nome);
+
+        if (
+            nomeNormalizado === busca ||
+            nomeNormalizado.includes(busca) ||
+            busca.includes(nomeNormalizado)
+        ) {
+
+            return {
+
+                familia: "Convite individual",
+
+                pessoas: [nome]
+
+            };
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* ==========================================================
+   MOSTRAR RESULTADO DA BUSCA
+========================================================== */
+
+function mostrarResultado(grupo) {
+
+    const mensagem = document.getElementById("mensagem");
+
+    if (!mensagem) {
+        return;
+    }
+
+
+    if (!grupo) {
+
+        mensagem.innerHTML = `
+
+            <div class="resultado erro">
+
+                <h3>
+                    Convite não encontrado
+                </h3>
+
+                <p>
+                    Não encontramos esse nome na lista de convidados.
+                </p>
+
+                <p>
+                    Confira o nome digitado e tente novamente.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const quantidade = grupo.pessoas.length;
+
+    let opcoes = "";
+
+
+    for (let i = 1; i <= quantidade; i++) {
+
+        opcoes += `
+
+            <option value="${i}">
+                ${i}
+                ${i === 1 ? "pessoa" : "pessoas"}
+            </option>
+
+        `;
+
+    }
+
+
+    mensagem.innerHTML = `
+
+        <div class="resultado sucesso">
+
+            <h3>
+                ✨ Convite encontrado!
+            </h3>
+
+            <p>
+                <strong>
+                    ${escaparHTML(grupo.familia)}
+                </strong>
+            </p>
+
+            <p>
+                Pessoas no convite:
+            </p>
+
+            <ul>
+
+                ${grupo.pessoas.map((nome) => `
+
+                    <li>
+                        ${escaparHTML(nome)}
+                    </li>
+
+                `).join("")}
+
+            </ul>
+
+
+            <div class="quantidade">
+
+                <label for="quantidadePessoas">
+                    Quantas pessoas irão?
+                </label>
+
+                <select id="quantidadePessoas">
+
+                    ${opcoes}
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="botao-confirmar"
+                id="confirmarPresenca">
+
+                Confirmar presença
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    const botao = document.getElementById(
+        "confirmarPresenca"
+    );
+
+
+    if (botao) {
+
+        botao.addEventListener(
+            "click",
+            () => confirmarPresenca(grupo)
+        );
+
+    }
+
+}
+
+
+/* ==========================================================
+   CONFIRMAR PRESENÇA NO FIRESTORE
+========================================================== */
+
+async function confirmarPresenca(grupo) {
+
+    const mensagem = document.getElementById("mensagem");
+
+    const select = document.getElementById(
+        "quantidadePessoas"
+    );
+
+
+    if (!mensagem || !select) {
+        return;
+    }
+
+
+    const quantidade = Number(select.value);
+
+    const conviteId = criarIdConvite(grupo);
+
+
+    /* AGUARDAR AUTENTICAÇÃO */
+
+    if (!usuarioFirebase) {
+
+        mensagem.innerHTML = `
+
+            <div class="resultado erro">
+
+                <h3>
+                    Aguarde um momento
+                </h3>
+
+                <p>
+                    Estamos conectando ao sistema de confirmação.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const botao = document.getElementById(
+        "confirmarPresenca"
+    );
+
+
+    if (botao) {
+
+        botao.disabled = true;
+
+        botao.textContent =
+            "Confirmando...";
+
+    }
+
+
+    try {
+
+        const referencia = db
+            .collection("confirmacoes")
+            .doc(conviteId);
+
+
+        /* VERIFICAR SE JÁ FOI CONFIRMADO */
+
+        const documento = await referencia.get();
+
+
+        if (documento.exists) {
+
+            const dados = documento.data();
+
+
+            mensagem.innerHTML = `
+
+                <div class="resultado erro">
+
+                    <h3>
+                        Presença já confirmada
+                    </h3>
+
+                    <p>
+                        Este convite já foi confirmado anteriormente.
+                    </p>
+
+                    <p>
+                        ${dados.quantidade || ""}
+                        ${
+                            Number(dados.quantidade) === 1
+                                ? "pessoa"
+                                : "pessoas"
+                        }
+                        ${
+                            dados.quantidade
+                                ? "confirmada(s)."
+                                : ""
+                        }
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        /* SALVAR CONFIRMAÇÃO */
+
+        await referencia.set({
+
+            conviteId: conviteId,
+
+            familia: grupo.familia,
+
+            pessoas: grupo.pessoas,
+
+            quantidade: quantidade,
+
+            confirmado: true,
+
+            dataConfirmacao:
+                firebase.firestore.FieldValue.serverTimestamp(),
+
+            usuario: usuarioFirebase.uid
+
+        });
+
+
+        /* SUCESSO */
+
+        mensagem.innerHTML = `
+
+            <div class="resultado sucesso">
+
+                <h3>
+                    💙 Presença confirmada!
+                </h3>
+
+                <p>
+                    Obrigada por confirmar sua presença
+                    na festa de 15 anos da Yasmim!
+                </p>
+
+                <p>
+                    <strong>
+                        ${quantidade}
+                        ${
+                            quantidade === 1
+                                ? "pessoa"
+                                : "pessoas"
+                        }
+                    </strong>
+                    ${
+                        quantidade === 1
+                            ? "foi confirmada."
+                            : "foram confirmadas."
+                    }
+                </p>
+
+                <p>
+                    Nos vemos no dia 05 de dezembro! ✨
+                </p>
+
+            </div>
+
+        `;
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao confirmar:",
+            erro
+        );
+
+
+        mensagem.innerHTML = `
+
+            <div class="resultado erro">
+
+                <h3>
+                    Não foi possível confirmar
+                </h3>
+
+                <p>
+                    Ocorreu um erro ao salvar sua confirmação.
+                </p>
+
+                <p>
+                    Tente novamente em alguns instantes.
+                </p>
+
+            </div>
+
+        `;
+
+
+        if (botao) {
+
+            botao.disabled = false;
+
+            botao.textContent =
+                "Confirmar presença";
+
+        }
+
+    }
+
+}
+
+
+/* ==========================================================
+   FORMULÁRIO DE BUSCA
+========================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const form =
+            document.getElementById("formRsvp");
+
+        const campo =
+            document.getElementById("convidado");
+
+
+        if (!form || !campo) {
+            return;
+        }
+
+
+        form.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const nome =
+                    campo.value.trim();
+
+
+                if (!nome) {
+
+                    mostrarResultado(null);
+
+                    return;
+
+                }
+
+
+                const grupo =
+                    buscarConvidado(nome);
+
+
+                mostrarResultado(grupo);
+
+            }
+        );
+
+    }
+);
+
+3. "convidados.js"
+
+Use o arquivo completo que te passei anteriormente com as 44 famílias e os 10 convidados individuais. Ele continua separado do Firebase — não coloque "initializeApp()" nele.
+
+⚠️ Uma coisa importante no Firebase
+
+Como suas regras usam:
+
+request.auth != null
+
+você precisa deixar a autenticação anônima habilitada.
+
+No Firebase:
+
+Authentication → Sign-in method → Anonymous → Ativar
+
+Sem isso, o site vai procurar os convidados normalmente, mas não conseguirá salvar a confirmação.
+
+E suas regras estão boas para o objetivo de impedir alterações:
+
+create → permitido apenas se ainda não existir
+update → bloqueado
+delete → bloqueado
+
+Assim, depois que uma família confirmar, o mesmo convite não poderá ser confirmado novamente pelo site.
