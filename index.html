@@ -1,0 +1,16 @@
+<!DOCTYPE html> <html lang="pt-BR"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="theme-color" content="#dceeff"> <title>Confirmação de Presença — Yasmim 15 Anos</title> <!-- FONTES --> <link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"> <!-- CSS --> <link rel="stylesheet" href="style.css"> </head> <body> <!-- ESTRELAS/DETALHES DO FUNDO --> <div class="estrelas"></div> <!-- CONTEÚDO PRINCIPAL --> <main class="pagina"> <!-- CABEÇALHO --> <header class="cabecalho"> <div class="monograma"> Y </div> <p class="pequeno"> 15 ANOS </p> <h1> Yasmim </h1> <p class="data"> 05 de dezembro • 20:00 </p> </header> <!-- CARD PRINCIPAL --> <section class="card"> <div class="icone"> ♡ </div> <h2> Confirme sua presença </h2> <p class="introducao"> Será uma alegria ter você comigo nessa noite tão especial. 💙 </p> <p class="instrucao"> Digite seu nome ou o nome da família para encontrar seu convite. </p> <!-- FORMULÁRIO DE BUSCA --> <form id="formRsvp"> <label for="convidado"> Nome do convidado </label> <input type="text" id="convidado" name="convidado" placeholder="Digite seu nome" autocomplete="off" required > <button type="submit" id="botaoBuscar"> Buscar convite </button> </form> <!-- RESULTADO DA BUSCA --> <div id="mensagem" aria-live="polite"> </div> </section> <!-- MENSAGEM FINAL --> <section class="mensagem-final"> <p> Uma noite iluminada por sonhos, marcada por memórias e cercada por pessoas especiais. </p> <span> Com carinho, Yasmim 🩵 </span> </section> <!-- RODAPÉ --> <footer> <p> Yasmim • 15 anos </p> <p> 05 de dezembro </p> </footer> </main> <!-- FIREBASE --> <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script> <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script> <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script> <!-- LISTA DE CONVIDADOS --> <script src="convidados.js"></script> <!-- JAVASCRIPT DO SITE --> <script src="script.js"></script> </body> </html> Estrutura dessa página 
+
+Ela ficará assim:
+
+Yasmim — 15 anos
+05 de dezembro • 20:00
+
+♡ Confirme sua presença
+
+Será uma alegria ter você comigo nessa noite tão especial. 💙
+
+Nome do convidado
+Digite seu nome
+
+[ Buscar convite ]
+
