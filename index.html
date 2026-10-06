@@ -96,27 +96,201 @@
 <script src="convidados.js?v=30"></script>
 
 <script>
-document.getElementById("botaoBuscar").addEventListener("click", function () {
+const campoBusca = document.getElementById("convidado");
+const botaoBuscar = document.getElementById("botaoBuscar");
+const mensagem = document.getElementById("mensagem");
 
-    const campo = document.getElementById("convidado");
-    const mensagem = document.getElementById("mensagem");
+let conviteAtual = null;
+let pessoasSelecionadas = [];
 
-    const nome = campo.value.trim();
+function normalizar(texto) {
+    return String(texto || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+}
 
-    if (!nome) {
-        mensagem.innerHTML = "<p>Digite um nome.</p>";
-        return;
+botaoBuscar.addEventListener("click", buscarConvidado);
+
+campoBusca.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        buscarConvidado();
     }
-
-    if (typeof convidados === "undefined") {
-        mensagem.innerHTML = "<p>ERRO: convidados.js não carregou.</p>";
-        return;
-    }
-
-    mensagem.innerHTML =
-        "<p>Lista carregada! Total: " + convidados.length + "</p>";
-
 });
+
+function buscarConvidado() {
+
+    const texto = normalizar(campoBusca.value);
+
+    if (!texto) {
+        mensagem.innerHTML = `
+            <div class="mensagem-erro">
+                Digite seu nome para buscar.
+            </div>
+        `;
+        return;
+    }
+
+    const resultados = convidados.filter(function(convite) {
+
+        const familia = normalizar(convite.familia);
+
+        const encontrouFamilia =
+            familia.includes(texto);
+
+        const encontrouPessoa =
+            Array.isArray(convite.pessoas) &&
+            convite.pessoas.some(function(pessoa) {
+                return normalizar(pessoa).includes(texto);
+            });
+
+        return encontrouFamilia || encontrouPessoa;
+    });
+
+    console.log("Pesquisa:", texto);
+    console.log("Resultados:", resultados);
+
+    if (resultados.length === 0) {
+
+        mensagem.innerHTML = `
+            <div class="mensagem-erro">
+                Não encontramos esse nome na lista.
+            </div>
+        `;
+
+        return;
+    }
+
+    if (resultados.length === 1) {
+        mostrarConvite(resultados[0]);
+        return;
+    }
+
+    let html = `
+        <div class="resultado-busca">
+            <p>Encontramos mais de um convite:</p>
+    `;
+
+    resultados.forEach(function(convite, index) {
+
+        html += `
+            <button
+                type="button"
+                class="resultado-item"
+                onclick="mostrarConvite(convidados[${convidados.indexOf(convite)}])"
+            >
+                ${convite.familia}
+            </button>
+        `;
+
+    });
+
+    html += `</div>`;
+
+    mensagem.innerHTML = html;
+}
+
+function mostrarConvite(convite) {
+
+    conviteAtual = convite;
+    pessoasSelecionadas = [];
+
+    let html = `
+        <div class="convite-encontrado">
+
+            <h3>${convite.familia}</h3>
+
+            <p>
+                Selecione quem irá ao aniversário:
+            </p>
+
+            <div class="lista-pessoas">
+    `;
+
+    convite.pessoas.forEach(function(pessoa, index) {
+
+        html += `
+            <label class="pessoa-item">
+
+                <input
+                    type="checkbox"
+                    onchange="alterarPessoa(${index}, this.checked)"
+                >
+
+                <span class="quadradinho"></span>
+
+                <span class="nome-pessoa">
+                    ${pessoa}
+                </span>
+
+            </label>
+        `;
+
+    });
+
+    html += `
+            </div>
+
+            <button
+                type="button"
+                class="botao-confirmar"
+                onclick="confirmarPresenca()"
+            >
+                Confirmar presença
+            </button>
+
+        </div>
+    `;
+
+    mensagem.innerHTML = html;
+}
+
+function alterarPessoa(index, selecionado) {
+
+    const pessoa = conviteAtual.pessoas[index];
+
+    if (selecionado) {
+
+        if (!pessoasSelecionadas.includes(pessoa)) {
+            pessoasSelecionadas.push(pessoa);
+        }
+
+    } else {
+
+        pessoasSelecionadas =
+            pessoasSelecionadas.filter(function(nome) {
+                return nome !== pessoa;
+            });
+    }
+
+    console.log("Selecionados:", pessoasSelecionadas);
+}
+
+function confirmarPresenca() {
+
+    if (pessoasSelecionadas.length === 0) {
+
+        mensagem.innerHTML = `
+            <div class="mensagem-erro">
+                Selecione pelo menos uma pessoa.
+            </div>
+        `;
+
+        return;
+    }
+
+    mensagem.innerHTML = `
+        <div class="confirmacao-final">
+            <div class="monograma-confirmacao">Y</div>
+
+            <h3>Presença selecionada!</h3>
+
+            <p>
+                ${pessoasSelecionadas.join(", ")}
+            </p>
+        </div>
+    `;
+}
 </script>
-
-
