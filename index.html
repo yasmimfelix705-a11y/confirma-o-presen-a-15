@@ -95,85 +95,28 @@
 
 <script src="convidados.js?v=30"></script>
 
-
 <script>
+document.getElementById("botaoBuscar").addEventListener("click", function () {
 
-/* ==========================================
-   FIREBASE
-========================================== */
+    const campo = document.getElementById("convidado");
+    const mensagem = document.getElementById("mensagem");
 
-const firebaseConfig = {
-    apiKey: "AIzaSyAYBh_xHUGuEgMjpHEOxBU-Nppc5ymum6g",
-    authDomain: "yasmim-dc181.firebaseapp.com",
-    projectId: "yasmim-dc181",
-    storageBucket: "yasmim-dc181.firebasestorage.app",
-    messagingSenderId: "773790336369",
-    appId: "1:773790336369:web:9292e70565a551b4bf22d0",
-    measurementId: "G-MRCSX5RNGN"
-};
+    const nome = campo.value.trim();
 
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-
-/* ==========================================
-   ELEMENTOS
-========================================== */
-
-const campoBusca = document.getElementById("convidado");
-const botaoBuscar = document.getElementById("botaoBuscar");
-const mensagem = document.getElementById("mensagem");
-
-let conviteAtual = null;
-let pessoasSelecionadas = [];
-
-
-/* ==========================================
-   FIREBASE ANÔNIMO
-========================================== */
-
-auth.signInAnonymously()
-    .then(() => {
-        console.log("Firebase conectado.");
-    })
-    .catch((erro) => {
-        console.log("Firebase:", erro);
-    });
-
-
-/* ==========================================
-   BOTÃO BUSCAR
-========================================== */
-
-botaoBuscar.addEventListener("click", buscarConvidado);
-
-
-/* ==========================================
-   ENTER
-========================================== */
-
-campoBusca.addEventListener("keydown", function(event) {
-
-    if (event.key === "Enter") {
-
-        event.preventDefault();
-
-        buscarConvidado();
-
+    if (!nome) {
+        mensagem.innerHTML = "<p>Digite um nome.</p>";
+        return;
     }
 
+    if (typeof convidados === "undefined") {
+        mensagem.innerHTML = "<p>ERRO: convidados.js não carregou.</p>";
+        return;
+    }
+
+    mensagem.innerHTML =
+        "<p>Lista carregada! Total: " + convidados.length + "</p>";
+
 });
+</script>
 
 
-/* ==========================================
-   NORMALIZAR
-========================================== */
-
-function normalizar(texto) {
-
-    return String(texto || "")
-        .toLowerCase()
-        .normalize("NFD")
-        .
