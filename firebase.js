@@ -189,5 +189,38 @@ window.salvarConfirmacao = async function(convite, pessoas) {
         };
 
     }
+/* ==========================================
+   VERIFICAR SE JÁ FOI CONFIRMADO
+========================================== */
 
+window.verificarConfirmacao = async function(conviteId) {
+
+    try {
+
+        if (!window.db) {
+            return false;
+        }
+
+        const referencia =
+            window.db
+                .collection("confirmacoes")
+                .doc(String(conviteId));
+
+        const documento =
+            await referencia.get();
+
+        return documento.exists;
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao verificar confirmação:",
+            erro
+        );
+
+        return false;
+
+    }
+
+};
 };
