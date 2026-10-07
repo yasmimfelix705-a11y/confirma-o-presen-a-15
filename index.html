@@ -1,0 +1,140 @@
+<!-- ==========================================
+     FIREBASE
+========================================== -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+
+<script>
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAYBh_xHUGuEGMjpHEOxBU-Nppc5ymum6g",
+    authDomain: "yasmim-dc181.firebaseapp.com",
+    projectId: "yasmim-dc181",
+    storageBucket: "yasmim-dc181.firebasestorage.app",
+    messagingSenderId: "773790336369",
+    appId: "1:773790336369:web:9292e70565a551b4bf22d0",
+    measurementId: "G-MRCSX5RNGN"
+};
+
+
+/* ==========================================
+   INICIAR FIREBASE
+========================================== */
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+
+
+/* ==========================================
+   LOGIN ANÔNIMO
+========================================== */
+
+firebase.auth()
+    .signInAnonymously()
+    .then(function() {
+
+        console.log("Firebase conectado com sucesso.");
+
+    })
+    .catch(function(error) {
+
+        console.error(
+            "Erro no Firebase:",
+            error
+        );
+
+    });
+
+
+/* ==========================================
+   FUNÇÃO PARA SALVAR CONFIRMAÇÃO
+========================================== */
+
+async function salvarNoFirebase(convite, pessoas) {
+
+    try {
+
+        /* Garante que está autenticado */
+
+        if (!firebase.auth().currentUser) {
+
+            await firebase
+                .auth()
+                .signInAnonymously();
+
+        }
+
+
+        /* ID do convite */
+
+        const conviteId = convite.id;
+
+
+        /* Documento */
+
+        const referencia = db
+            .collection("confirmacoes")
+            .doc(conviteId);
+
+
+        /* Verifica se já existe */
+
+        const documento = await referencia.get();
+
+
+        if (documento.exists) {
+
+            return {
+                sucesso: false,
+                jaConfirmado: true
+            };
+
+        }
+
+
+        /* Salva */
+
+        await referencia.set({
+
+            conviteId: conviteId,
+
+            familia: convite.familia,
+
+            pessoas: pessoas,
+
+            quantidade: pessoas.length,
+
+            confirmadoEm:
+                firebase.firestore.FieldValue.serverTimestamp()
+
+        });
+
+
+        return {
+            sucesso: true
+        };
+
+
+    } catch (error) {
+
+        console.error(
+            "Erro ao salvar confirmação:",
+            error
+        );
+
+        return {
+            sucesso: false,
+            erro: true
+        };
+
+    }
+
+}
+
+</script>
