@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Confirmação de Presença — Yasmim</title>
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet">
+
+<link rel="stylesheet"
+      href="style.css">
+
+</head>
+
+
+<body>
+
+<div class="estrelas"></div>
+
+
+<main class="pagina">
+
+<section class="card">
+
+<div class="monograma">Y</div>
+
+<p class="numero">15 ANOS</p>
+
+<h1>Yasmim</h1>
+
+<div class="linha"></div>
+
+<p class="frase">
+Uma noite iluminada por sonhos, marcada por memórias e cercada por pessoas especiais.
+</p>
+
+<p class="data">
+05 de dezembro • 20:00
+</p>
+
+<div class="divisor">
+<span>✦</span>
+</div>
+
+<h2>Confirme sua presença</h2>
+
+<p class="instrucao">
+Digite seu nome ou o nome da sua família para consultar seu convite.
+</p>
+
+
+<div class="campo-busca">
+
+<input
+type="text"
+id="convidado"
+placeholder="Digite seu nome"
+autocomplete="off"
+>
+
+<button
+type="button"
+id="botaoBuscar"
+>
+Buscar
+</button>
+
+</div>
+
+
+<div id="mensagem"></div>
+
+<div id="resultado"></div>
+
+
+<p class="rodape">
+Será uma alegria ter você comigo nessa noite tão especial. 🩵
+</p>
+
+</section>
+
+</main>
+
+
+<!-- ======================================
+     CONVIDADOS
+====================================== -->
+
+<script src="convidados.js?v=999999"></script>
+
+
+<!-- ======================================
+     CÓDIGO PRINCIPAL
+     A BUSCA NÃO DEPENDE DO FIREBASE
+====================================== -->
+
+<script>
+
+function normalizar(texto) {
+
+return String(texto || "")
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "")
+.trim();
+
+}
+
+
+function buscarConvidado() {
+
+const campo =
+document.getElementById("convidado");
+
+const mensagem =
+document.getElementById("mensagem");
+
+const resultado =
+document.getElementById("resultado");
+
+const texto =
+campo.value.trim();
+
+
+mensagem.innerHTML = "";
+
+resultado.innerHTML = "";
+
+
+if (texto === "") {
+
+mensagem.innerHTML =
+"<p>Digite seu nome para buscar.</p>";
+
+campo.focus();
+
+return;
+
+}
+
+
+if (
+typeof convidados === "undefined" ||
+!Array.isArray(convidados)
+) {
+
+mensagem.innerHTML =
+"<p>Não foi possível carregar a lista de convidados.</p>";
+
+return;
+
+}
+
+
+const procura =
+normalizar(texto);
+
+
+const encontrados =
+convidados.filter(function(convite) {
+
+const familia =
+normalizar(convite.familia);
+
+const pessoas =
+Array.isArray(convite.pessoas)
+? convite.pessoas
+: [];
+
+
+if (familia.includes(procura)) {
+return true;
+}
+
+
+return pessoas.some(function(pessoa) {
+
+return normalizar(pessoa)
+.includes(procura);
+
+});
+
+});
+
+
+if (encontrados.length === 0) {
+
+mensagem.innerHTML =
+"<p>Não encontramos esse nome na lista. Verifique a escrita e tente novamente.</p>";
+
+return;
+
+}
+
+
+mensagem.innerHTML =
+"<p>Encontramos seu convite:</p>";
+
+
+encontrados.forEach(function(convite) {
+
+
+const caixa =
+document.createElement("div");
+
+caixa.className =
+"caixa-convite";
+
+
+const titulo =
+document.createElement("h3");
+
+titulo.textContent =
+convite.familia || "Seu convite";
+
+caixa.appendChild(titulo);
+
+
+const textoPessoas =
+document.createElement("p");
+
+textoPessoas.textContent =
+"Quem irá à festa?";
+
+caixa.appendChild(textoPessoas);
+
+
+const lista =
+document.createElement("div");
+
+lista.className =
+"lista-pessoas";
+
+
+const pessoas =
+Array.isArray(convite.pessoas)
+? convite.pessoas
+: [];
+
+
+pessoas.forEach(function(pessoa) {
+
+
+const label =
+document.createElement("label");
+
+label.className =
+"pessoa";
+
+
+const checkbox =
+document.createElement("input");
+
+checkbox.type =
+"checkbox";
+
+checkbox.value =
+pessoa;
+
+checkbox.className =
+"pessoa-checkbox";
+
+
+const nome =
+document.createElement("span");
+
+nome.textContent =
+pessoa;
+
+
+label.appendChild(checkbox);
+
+label.appendChild(nome);
+
+lista.appendChild(label);
+
+});
+
+
+caixa.appendChild(lista);
+
+
+// ======================================
+// BOTÃO DE CONFIRMAR
+// ======================================
+
+const confirmar =
+document.createElement("button");
+
+confirmar.type =
+"button";
+
+confirmar.className =
+"botao-confirmar";
+
+confirmar.textContent =
+"Confirmar presença";
+
+
+// ======================================
+// VERIFICAR SE JÁ CONFIRMOU
+// ======================================
+
+if (
+typeof window.verificarConfirmacao ===
+"function"
+) {
+
+window.verificarConfirmacao(convite.id)
+.then(function(jaConfirmado) {
+
+if (!jaConfirmado) {
+return;
+}
+
+
+confirmar.textContent =
+"Presença já confirmada 🩵";
+
+confirmar.disabled =
+true;
+
+
+caixa
+.querySelectorAll(".pessoa-checkbox")
+.forEach(function(checkbox) {
+
+checkbox.disabled =
+true;
+
+});
+
+})
+.catch(function(erro) {
+
+console.error(
+"Erro ao verificar confirmação:",
+erro
+);
+
+});
+
+}
+
+
+// ======================================
+// CONFIRMAR
+// ======================================
+
+confirmar.onclick =
+async function() {
+
+
+const selecionados =
+Array.from(
+caixa.querySelectorAll(
+".pessoa-checkbox:checked"
+)
+).map(function(checkbox) {
+
+return checkbox.value;
+
+});
+
+
+if (selecionados.length === 0) {
+
+mensagem.innerHTML =
+"<p>Selecione pelo menos uma pessoa para confirmar.</p>";
+
+return;
+
+}
+
+
+// Firebase ainda não carregou
+if (
+typeof window.salvarConfirmacao !==
+"function"
+) {
+
+mensagem.innerHTML =
+"<p>Aguarde alguns segundos e tente confirmar novamente. 🩵</p>";
+
+return;
+
+}
+
+
+confirmar.disabled =
+true;
+
+confirmar.textContent =
+"Confirmando...";
+
+
+const resposta =
+await window.salvarConfirmacao(
+convite,
+selecionados
+);
+
+
+// ======================================
+// JÁ CONFIRMADO
+// ======================================
+
+if (resposta.jaConfirmado) {
+
+confirmar.textContent =
+"Presença já confirmada 🩵";
+
+confirmar.disabled =
+true;
+
+
+caixa
+.querySelectorAll(".pessoa-checkbox")
+.forEach(function(checkbox) {
+
+checkbox.disabled =
+true;
+
+});
+
+
+mensagem.innerHTML =
+"<p>Esta família já confirmou presença. 🩵</p>";
+
+return;
+
+}
+
+
+// ======================================
+// SUCESSO
+// ======================================
+
+if (resposta.sucesso) {
+
+confirmar.textContent =
+"Presença já confirmada 🩵";
+
+confirmar.disabled =
+true;
+
+
+caixa
+.querySelectorAll(".pessoa-checkbox")
+.forEach(function(checkbox) {
+
+checkbox.disabled =
+true;
+
+});
+
+
+mensagem.innerHTML =
+"<p>Presença confirmada com sucesso! 🩵</p>";
+
+return;
+
+}
+
+
+// ======================================
+// ERRO
+// ======================================
+
+confirmar.disabled =
+false;
+
+confirmar.textContent =
+"Confirmar presença";
+
+
+mensagem.innerHTML =
+"<p>Não foi possível confirmar. Tente novamente.</p>";
+
+console.error(
+"Erro:",
+resposta.erro
+);
+
+};
+
+
+caixa.appendChild(confirmar);
+
+resultado.appendChild(caixa);
+
+});
+
+}
+
+
+// ==========================================
+// BOTÃO BUSCAR
+// ==========================================
+
+document
+.getElementById("botaoBuscar")
+.addEventListener(
+"click",
+function() {
+
+buscarConvidado();
+
+}
+);
+
+
+// ==========================================
+// ENTER
+// ==========================================
+
+document
+.getElementById("convidado")
+.addEventListener(
+"keydown",
+function(event) {
+
+if (event.key === "Enter") {
+
+event.preventDefault();
+
+buscarConvidado();
+
+}
+
+}
+);
+
+</script>
+
+
+<!-- ======================================
+     FIREBASE
+     CARREGADO DEPOIS DA BUSCA
+====================================== -->
+
+<script src="firebase.js"></script>
+
+
+</body>
+
+</html>
