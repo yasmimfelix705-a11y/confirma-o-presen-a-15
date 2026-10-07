@@ -95,3 +95,99 @@ function iniciarFirebase() {
     }
 
 }
+/* ==========================================
+   SALVAR CONFIRMAÇÃO NO FIRESTORE
+========================================== */
+
+window.salvarConfirmacao = async function(convite, pessoas) {
+
+    try {
+
+        if (!window.db) {
+
+            return {
+                sucesso: false,
+                erro: "Firebase ainda não está pronto."
+            };
+
+        }
+
+
+        /* Garante que o usuário esteja autenticado */
+
+        if (!firebase.auth().currentUser) {
+
+            await firebase.auth().signInAnonymously();
+
+        }
+
+
+        /* ID do convite */
+
+        const conviteId =
+            String(convite.id);
+
+
+        /* Documento */
+
+        const referencia =
+            window.db
+                .collection("confirmacoes")
+                .doc(conviteId);
+
+
+        /* Verifica se já existe */
+
+        const documento =
+            await referencia.get();
+
+
+        if (documento.exists) {
+
+            return {
+                sucesso: false,
+                jaConfirmado: true
+            };
+
+        }
+
+
+        /* Salva */
+
+        await referencia.set({
+
+            conviteId: conviteId,
+
+            familia: convite.familia || "",
+
+            pessoas: pessoas,
+
+            quantidade: pessoas.length,
+
+            confirmadoEm:
+                firebase.firestore.FieldValue
+                    .serverTimestamp()
+
+        });
+
+
+        return {
+            sucesso: true
+        };
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao salvar:",
+            erro
+        );
+
+        return {
+            sucesso: false,
+            erro: erro.message
+        };
+
+    }
+
+};
